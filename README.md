@@ -172,7 +172,7 @@ Dockerfileに組み込みたいが、Privilegedで起動扠せねばならぬ問
 |  updated_at  |  timestamp  |
 |  user_id  |  bigint  |  users  |
 |  group_id  |  bigint  |  groups  |
-|  todo_status_id  |  bigint  |  todo_statuses  |
+|  task_status_id  |  bigint  |  task_statuses  |
 
 ## task_statuses
 
@@ -200,6 +200,5 @@ Dockerfileに組み込みたいが、Privilegedで起動扠せねばならぬ問
 |  id  |  bigint  |
 |  created_at  |  timestamp  |
 |  updated_at  |  timestamp  |
-|  todo_id  |  bigint  |  todos  |
+|  task_id  |  bigint  |  tasks  |
 |  tag_id  |  bigint  |  tags  |
-|  user_id  |  bigint  |  users  |
