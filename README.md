@@ -146,3 +146,57 @@ $ echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
 $ cat /proc/sys/fs/inotify/max_user_watches
 ```
 Dockerfileに組み込みたいが、Privilegedで起動扠せねばならぬ問題があるため、起動時に叩くシェルを作るか
+
+# テーブルスキーマ
+## users
+
+|  column  |  data type  |  foreign key  |
+| ---- | ---- | ---- |
+|  id  |  bigint  |
+|  mail  |  varchar(255)  |
+|  password  |  varchar(60)  |
+|  admin  |  boolean  |
+|  created_at  |  timestamp  |
+|  updated_at  |  timestamp  |
+
+## tasks
+
+|  column  |  data type  |  foreign key  |
+| ---- | ---- | ---- |
+|  id  |  bigint  |
+|  name  |  text  |
+|  priority  |  serial  |
+|  deadline  |  timestamp  |
+|  detail  |  text  |
+|  created_at  |  timestamp  |
+|  updated_at  |  timestamp  |
+|  user_id  |  bigint  |  users  |
+|  task_status_id  |  bigint  |  task_statuses  |
+
+## task_statuses
+
+|  column  |  data type  |  foreign key  |
+| ---- | ---- | ---- |
+|  id  |  bigint  |
+|  name  |  varchar(64)  |
+|  created_at  |  timestamp  |
+|  updated_at  |  timestamp  |
+
+## tags
+
+|  column  |  data type  |  foreign key  |
+| ---- | ---- | ---- |
+|  id  |  bigint  |
+|  name  |  varchar(255)  |
+|  created_at  |  timestamp  |
+|  updated_at  |  timestamp  |
+
+## tasks_tags
+
+|  column  |  data type  |  foreign key  |
+| ---- | ---- | ---- |
+|  id  |  bigint  |
+|  created_at  |  timestamp  |
+|  updated_at  |  timestamp  |
+|  task_id  |  bigint  |  tasks  |
+|  tag_id  |  bigint  |  tags  |
