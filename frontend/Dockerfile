@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:8.12-jessie
+FROM node:18.7-bullseye
 
 WORKDIR /var/src/app/frontend
 COPY package-lock.json .
