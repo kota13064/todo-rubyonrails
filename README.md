@@ -171,7 +171,6 @@ Dockerfileに組み込みたいが、Privilegedで起動扠せねばならぬ問
 |  created_at  |  timestamp  |
 |  updated_at  |  timestamp  |
 |  user_id  |  bigint  |  users  |
-|  group_id  |  bigint  |  groups  |
 |  task_status_id  |  bigint  |  task_statuses  |
 
 ## task_statuses
@@ -191,7 +190,6 @@ Dockerfileに組み込みたいが、Privilegedで起動扠せねばならぬ問
 |  name  |  varchar(255)  |
 |  created_at  |  timestamp  |
 |  updated_at  |  timestamp  |
-|  user_id  |  bigint  |  users  |
 
 ## tasks_tags
 
