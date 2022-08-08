@@ -2,21 +2,21 @@
 
 <div id="tasks">
 	<table border="1">
-    <thead>
-      <tr>
+		<thead>
+			<tr>
 				<th>ID</th>
 				<th>task</th>
 				<th>detail</th>
-      </tr>
-    </thead>
-    <tbody>
+			</tr>
+		</thead>
+		<tbody>
 		<% @tasks.each do |task| %>
-      <tr>
+			<tr>
 				<td><%= task.id %></td>
-      	<td><%= task.name %></td>
-      	<td><%= task.detail %></td>
-      </tr>
+				<td><%= task.name %></td>
+				<td><%= task.detail %></td>
+			</tr>
 		<% end %>
-    </tbody>
+		</tbody>
 	</table>
 </div>
