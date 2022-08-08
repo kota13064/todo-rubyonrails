@@ -1,0 +1,22 @@
+<h1>Tasks List</h1>
+
+<div id="tasks">
+	<table border="1">
+    <thead>
+      <tr>
+				<th>ID</th>
+				<th>task</th>
+				<th>detail</th>
+      </tr>
+    </thead>
+    <tbody>
+		<% @tasks.each do |task| %>
+      <tr>
+				<td><%= task.id %></td>
+      	<td><%= task.name %></td>
+      	<td><%= task.detail %></td>
+      </tr>
+		<% end %>
+    </tbody>
+	</table>
+</div>
