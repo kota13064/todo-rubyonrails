@@ -4,7 +4,7 @@ services:
     image: postgres:14.4-alpine
     restart: always
     volumes:
-      - ./containers/db:/docker-entrypoint-initdb.d
+      - ./containers/postgres_volume:/var/lib/postgresql/data
     ports:
       - 5433:5432
     environment:
