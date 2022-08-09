@@ -7,6 +7,7 @@
 				<th>ID</th>
 				<th>task</th>
 				<th>detail</th>
+				<th>link</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -15,6 +16,7 @@
 				<td><%= task.id %></td>
 				<td><%= task.name %></td>
 				<td><%= task.detail %></td>
+				<td><%= link_to "Show", task_path(task) %></td>
 			</tr>
 		<% end %>
 		</tbody>
