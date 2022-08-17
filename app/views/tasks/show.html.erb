@@ -17,4 +17,6 @@
 <div>
   <%= link_to "編集", edit_task_path %> |
   <%= link_to "TODOリストへ戻る", tasks_path %>
+
+  <%= button_to "このタスクを削除", @task, method: :delete, style: "color:red;" %>
 </div>

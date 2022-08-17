@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[ show edit update ]
+  before_action :set_task, only: %i[ show edit update destroy ]
   
   def index
     @tasks = Task.all
@@ -34,6 +34,15 @@ class TasksController < ApplicationController
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    @task.destroy
+
+    respond_to do |format|
+      format.html { redirect_to tasks_url, notice: "削除されました" }
+      format.json { head :no_content }
     end
   end
 
