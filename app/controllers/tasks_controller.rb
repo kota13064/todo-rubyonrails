@@ -18,32 +18,24 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
 
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to task_url(@task), notice: "新規作成されました" }
-      else
-        format.html { render :new, status: :unprocessable_entity } #HTTP status 422
-      end
+    if @task.save
+      redirect_to task_url(@task), notice: "新規作成されました"
+    else
+      render :new, status: :unprocessable_entity #HTTP status 422
     end
   end
 
   def update
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to task_url(@task), notice: "更新されました" }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-      end
+    if @task.update(task_params)
+      redirect_to task_url(@task), notice: "更新されました"
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @task.destroy
-
-    respond_to do |format|
-      format.html { redirect_to tasks_url, notice: "削除されました" }
-      format.json { head :no_content }
-    end
+    redirect_to tasks_url, notice: "削除されました"
   end
 
   private
