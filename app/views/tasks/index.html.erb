@@ -1,13 +1,16 @@
-<h1>Tasks List</h1>
+<h1>TODOリスト</h1>
+
+<%= link_to "新規作成", new_task_path %>
+<br>
 
 <div id="tasks">
 	<table border="1">
 		<thead>
 			<tr>
 				<th>ID</th>
-				<th>task</th>
-				<th>detail</th>
-				<th>link</th>
+				<th>TODO</th>
+				<th>詳細</th>
+				<th>リンク</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -16,7 +19,10 @@
 				<td><%= task.id %></td>
 				<td><%= task.name %></td>
 				<td><%= task.detail %></td>
-				<td><%= link_to "Show", task_path(task) %></td>
+				<td>
+					<%= link_to "閲覧", task %>
+					<%= link_to "編集", edit_task_path(task) %>
+				</td>
 			</tr>
 		<% end %>
 		</tbody>
