@@ -2,16 +2,16 @@
 
 <h1><%= t ".title" %></h1>
 
-<%= link_to "新規作成", new_task_path %>
+<%= link_to t('tasks.new.title'), new_task_path %>
 <br>
 
 <div id="tasks">
 	<table border="1">
 		<thead>
 			<tr>
-				<th>ID</th>
-				<th>TODO</th>
-				<th>詳細</th>
+				<th><%= Task.human_attribute_name(:id) %></th>
+				<th><%= Task.human_attribute_name(:name) %></th>
+				<th><%= Task.human_attribute_name(:detail) %></th>
 				<th>リンク</th>
 			</tr>
 		</thead>
@@ -22,8 +22,8 @@
 				<td><%= task.name %></td>
 				<td><%= task.detail %></td>
 				<td>
-					<%= link_to "閲覧", task %>
-					<%= link_to "編集", edit_task_path(task) %>
+					<%= link_to t('tasks.show.title'), task %>
+					<%= link_to t('tasks.edit.title'), edit_task_path(task) %>
 				</td>
 			</tr>
 		<% end %>
