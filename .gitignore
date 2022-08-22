@@ -28,3 +28,6 @@
 
 # Database Volumes
 /containers/postgres_volume
+
+# Visual Studio Code Settings
+/.vscode

@@ -1,22 +1,22 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>詳細閲覧</h1>
+<h1><%= t ".title" %></h1>
 <div>
   <p>
-    <strong>TODO：</strong>
+    <strong><%= Task.human_attribute_name(:name) %> : </strong>
     <%= @task.name %>
   </p>
 
   <p>
-    <strong>詳細：</strong>
+    <strong><%= Task.human_attribute_name(:detail) %> : </strong>
     <%= @task.detail %>
   </p>
 
 </div>
 
 <div>
-  <%= link_to "編集", edit_task_path %> |
-  <%= link_to "TODOリストへ戻る", tasks_path %>
+  <%= link_to I18n.t('tasks.edit.title'), edit_task_path %> |
+  <%= link_to I18n.t('tasks.index.title'), tasks_path %>
 
   <%= button_to "このタスクを削除", @task, method: :delete, style: "color:red;" %>
 </div>

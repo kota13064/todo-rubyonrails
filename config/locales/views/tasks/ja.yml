@@ -1,0 +1,11 @@
+
+ja:
+  tasks:
+    index:
+      title: 'タスク一覧'
+    show:
+      title: 'タスクを閲覧'
+    edit:
+      title: 'タスクを編集'
+    new:
+      title: 'タスクを新規作成'
