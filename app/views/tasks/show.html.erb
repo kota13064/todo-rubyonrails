@@ -15,8 +15,8 @@
 </div>
 
 <div>
-  <%= link_to t('tasks.edit.title'), edit_task_path %> |
-  <%= link_to t('tasks.index.title'), tasks_path %>
+  <%= link_to I18n.t('tasks.edit.title'), edit_task_path %> |
+  <%= link_to I18n.t('tasks.index.title'), tasks_path %>
 
   <%= button_to "このタスクを削除", @task, method: :delete, style: "color:red;" %>
 </div>
