@@ -18,11 +18,20 @@ RSpec.describe TasksController, type: :request do
   end
 
   describe '#show' do
-    let!(:task) { create(:task) }
+    context 'When a task exists' do
+      let!(:task) { create(:task) }
 
-    it '200 OK' do
-      get task_path task
-      expect(response).to have_http_status 200
+      it '200 OK' do
+        get task_path task
+        expect(response).to have_http_status 200
+      end
+    end
+
+    context 'When a task does not exist' do
+      it '404 not found' do
+        get task_path 1
+        expect(response).to have_http_status 404
+      end
     end
   end
 
@@ -47,6 +56,7 @@ RSpec.describe TasksController, type: :request do
     it '302 redirect' do
       post tasks_path, params: { task: attributes_for(:task) }
       expect(response).to have_http_status 302
+      expect(response).to redirect_to Task.last
     end
   end
 
@@ -56,6 +66,7 @@ RSpec.describe TasksController, type: :request do
     it '302 redirect' do
       put task_path task, params: { task: attributes_for(:task, name:'update name', detail:'update detail') }
       expect(response).to have_http_status 302
+      expect(response).to redirect_to Task.last
     end
   end
 
@@ -65,6 +76,7 @@ RSpec.describe TasksController, type: :request do
     it '302 redirect' do
       delete task_path task
       expect(response).to have_http_status 302
+      expect(response).to redirect_to(tasks_path)
     end
   end
 end
