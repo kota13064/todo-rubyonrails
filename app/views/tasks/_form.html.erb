@@ -1,4 +1,7 @@
 <%= form_with(model: task) do |form| %>
+
+  <%= render 'layouts/error_form', model: task %>
+
   <div>
     <%= form.label :name, Task.human_attribute_name(:name), style: "display: block" %>
     <%= form.text_field :name %>
