@@ -38,7 +38,6 @@ class TasksController < ApplicationController
     redirect_to tasks_url, notice: "削除されました"
   end
 
-  #
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def render_404
