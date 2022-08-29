@@ -12,6 +12,7 @@
 				<th><%= Task.human_attribute_name(:id) %></th>
 				<th><%= Task.human_attribute_name(:name) %></th>
 				<th><%= Task.human_attribute_name(:detail) %></th>
+				<th><%= Task.human_attribute_name(:deadline) %></th>
 				<th>リンク</th>
 			</tr>
 		</thead>
@@ -21,6 +22,7 @@
 				<td><%= task.id %></td>
 				<td><%= task.name %></td>
 				<td><%= task.detail %></td>
+				<td><%= task.deadline %></td>
 				<td>
 					<%= link_to t('tasks.show.title'), task %>
 					<%= link_to t('tasks.edit.title'), edit_task_path(task) %>
