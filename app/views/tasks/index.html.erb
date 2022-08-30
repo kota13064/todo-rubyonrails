@@ -3,9 +3,15 @@
 <h1><%= t ".title" %></h1>
 
 <%= link_to t('tasks.new.title'), new_task_path %>
-<br>
 
 <div id="tasks">
+	<%= form_with url:tasks_path, method: :get, local: true do |f| %>
+		<%= f.label :order_column, 'ソート' %>
+		<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"]], { include_blank: 'なし' } %>
+		<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { include_blank: 'なし' } %>
+		<%= f.submit '検索' %>
+	<% end %>
+
 	<table border="1">
 		<thead>
 			<tr>
