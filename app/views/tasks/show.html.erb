@@ -17,6 +17,13 @@
     <%= @task.deadline %>
   </p>
 
+  <p>
+    <strong><%= Task.human_attribute_name(:task_status) %> : </strong>
+    <% if @task.task_status.present? %>
+			<%= @task.task_status.name %>
+		<% end %>
+  </p>
+
 </div>
 
 <div>
