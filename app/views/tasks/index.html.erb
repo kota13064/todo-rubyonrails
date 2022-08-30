@@ -19,6 +19,7 @@
 				<th><%= Task.human_attribute_name(:name) %></th>
 				<th><%= Task.human_attribute_name(:detail) %></th>
 				<th><%= Task.human_attribute_name(:deadline) %></th>
+				<th><%= Task.human_attribute_name(:task_status) %></th>
 				<th>リンク</th>
 			</tr>
 		</thead>
@@ -29,6 +30,11 @@
 				<td><%= task.name %></td>
 				<td><%= task.detail %></td>
 				<td><%= task.deadline %></td>
+				<td>
+					<% if task.task_status.present? %>
+						<%= task.task_status.name %>
+					<% end %>
+				</td>
 				<td>
 					<%= link_to t('tasks.show.title'), task %>
 					<%= link_to t('tasks.edit.title'), edit_task_path(task) %>
