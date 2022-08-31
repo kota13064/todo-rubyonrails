@@ -1,8 +1,8 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
-  
+
   def index
-    @tasks = Task.all
+    @tasks = Task.all.order(created_at: :desc)
   end
 
   def show
@@ -36,6 +36,12 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     redirect_to tasks_url, notice: "削除されました"
+  end
+
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+
+  def render_404
+    render file: 'public/404.html', status: 404, content_type: 'text/html'
   end
 
   private
