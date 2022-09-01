@@ -2,7 +2,11 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
 
   def index
-    @tasks = Task.all.order(created_at: :desc)
+    if params[:order].present? && params[:order_column].present? then
+      @tasks = Task.all.order(params[:order_column] => params[:order])
+    else
+      @tasks = Task.all.order(created_at: :desc)
+    end
   end
 
   def show
@@ -38,7 +42,6 @@ class TasksController < ApplicationController
     redirect_to tasks_url, notice: "削除されました"
   end
 
-  #
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def render_404
@@ -51,6 +54,6 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.require(:task).permit(:name, :detail)
+      params.require(:task).permit(:name, :detail, :deadline)
     end
 end

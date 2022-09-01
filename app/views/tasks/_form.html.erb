@@ -13,6 +13,11 @@
   </div>
 
   <div>
+    <%= form.label :deadline, Task.human_attribute_name(:deadline), style: "display: block" %>
+    <%= form.datetime_field :deadline %>
+  </div>
+
+  <div>
     <%= form.submit '送信' %>
   </div>
 <% end %>

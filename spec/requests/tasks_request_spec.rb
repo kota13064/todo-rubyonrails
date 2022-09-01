@@ -2,18 +2,34 @@ require 'rails_helper'
 
 RSpec.describe TasksController, type: :request do
   describe '#index' do
-    let!(:task1) { create(:task, name:'task1', detail:'task detail1', created_at:'2022-08-23T12:00:00.000+09:00') }
-    let!(:task2) { create(:task, name:'task2', detail:'task detail2', created_at:'2022-08-15T12:00:00.000+09:00') }
-    let!(:task3) { create(:task, name:'task3', detail:'task detail3', created_at:'2022-08-22T12:00:00.000+09:00') }
-
     it '200 OK' do
       get tasks_path
       expect(response).to have_http_status 200
     end
 
-    it '順序がタスクの作成日の降順となっていること' do
-      get tasks_path
-      expect(controller.instance_variable_get(:@tasks)).to eq [task1, task3, task2]
+    context 'ソート条件なし' do
+      let!(:task1) { create(:task, created_at:'2022-08-23T12:00:00.000+09:00') }
+      let!(:task2) { create(:task, created_at:'2022-08-15T12:00:00.000+09:00') }
+      let!(:task3) { create(:task, created_at:'2022-08-22T12:00:00.000+09:00') }
+      it '順序がタスクの作成日の降順となっていること' do
+        get tasks_path
+        expect(controller.instance_variable_get(:@tasks)).to eq [task1, task3, task2]
+      end
+    end
+
+    context '締め切り日でソート' do
+      let!(:task4) { create(:task, deadline:'2022-08-23T12:00:00.000+09:00') }
+      let!(:task5) { create(:task, deadline:'2022-08-15T12:00:00.000+09:00') }
+      let!(:task6) { create(:task, deadline:'2022-08-22T12:00:00.000+09:00') }
+      it '締め切り日の降順でソートが行われること' do
+        get tasks_path, params: { order_column: 'deadline', order: 'asc' }
+        expect(controller.instance_variable_get(:@tasks)).to eq [task5, task6, task4]
+      end
+
+      it '締め切り日の昇順でソートが行われること' do
+        get tasks_path, params: { order_column: 'deadline', order: 'desc' }
+        expect(controller.instance_variable_get(:@tasks)).to eq [task4, task6, task5]
+      end
     end
   end
 
