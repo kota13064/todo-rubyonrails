@@ -3,11 +3,14 @@ class TasksController < ApplicationController
 
   def index
     @tasks =
-      if params[:order].present? && params[:order_column].present?
-        Task.all.order(params[:order_column] => params[:order])
+      if search_params[:order].present? && search_params[:order_column].present?
+        Task.all.order(search_params[:order_column] => search_params[:order])
       else
         Task.all.order(created_at: :desc)
       end
+
+    @tasks = @tasks.where('name LIKE ?', "%#{Task.sanitize_sql_like(search_params[:name])}%") if search_params[:name].present?
+    @tasks = @tasks.where(task_status_id: search_params[:task_status_id]) if search_params[:task_status_id].present?
   end
 
   def show; end
@@ -53,7 +56,11 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
   end
 
-    def task_params
-      params.require(:task).permit(:name, :detail, :deadline, :task_status_id)
-    end
+  def task_params
+    params.require(:task).permit(:name, :detail, :deadline, :task_status_id)
+  end
+
+  def search_params
+    params.permit(:name, :task_status_id, :order_column, :order)
+  end
 end
