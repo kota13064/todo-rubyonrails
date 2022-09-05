@@ -31,3 +31,6 @@
 
 # Visual Studio Code Settings
 /.vscode
+/.devcontainer
+
+.DS_Store
