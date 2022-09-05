@@ -1,0 +1,41 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+# 対象外
+AllCops:
+  NewCops: enable
+  Exclude:
+    - "vendor/**/*"
+    - "bin/**"
+    - "db/schema.rb"
+    - "node_modules/**/*"
+    - "tmp/**/*"
+    - "lib/**/*"
+  DisplayCopNames: true
+  TargetRubyVersion: 3.1
+
+# クラスの最上部にドキュメントを書かなくても良い
+Style/Documentation:
+  Enabled: false
+
+# 日本語のコメントを許可する
+Style/AsciiComments:
+  Enabled: false
+
+# 1行の文字数
+Layout/LineLength:
+  Max: 160
+
+# 文字列をfreezeするか
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+
+# RSpec
+
+# Start context description with 'when', 'with', or 'without'
+RSpec/ContextWording:
+  Enabled: false
