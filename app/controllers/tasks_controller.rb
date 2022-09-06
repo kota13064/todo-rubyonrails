@@ -2,15 +2,17 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
 
   def index
+    @tasks = Task.select('tasks.*, task_statuses.name AS status_name')
     @tasks =
       if search_params[:order].present? && search_params[:order_column].present?
-        Task.all.order(search_params[:order_column] => search_params[:order])
+        @tasks.order(search_params[:order_column] => search_params[:order])
       else
-        Task.all.order(created_at: :desc)
+        @tasks.order(created_at: :desc)
       end
 
-    @tasks = @tasks.where('name LIKE ?', "%#{Task.sanitize_sql_like(search_params[:name])}%") if search_params[:name].present?
+    @tasks = @tasks.where('tasks.name LIKE ?', "%#{Task.sanitize_sql_like(search_params[:name])}%") if search_params[:name].present?
     @tasks = @tasks.where(task_status_id: search_params[:task_status_id]) if search_params[:task_status_id].present?
+    @tasks = @tasks.joins(:task_status)
   end
 
   def show; end

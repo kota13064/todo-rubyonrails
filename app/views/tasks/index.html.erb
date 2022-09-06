@@ -43,9 +43,7 @@
 				<td><%= task.detail %></td>
 				<td><%= task.deadline %></td>
 				<td>
-					<% if task.task_status.present? %>
-						<%= task.task_status.name %>
-					<% end %>
+					<%= task.status_name %>
 				</td>
 				<td>
 					<%= link_to I18n.t('tasks.show.title'), task %>
