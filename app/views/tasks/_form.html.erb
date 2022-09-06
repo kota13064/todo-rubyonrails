@@ -1,4 +1,7 @@
 <%= form_with(model: task) do |form| %>
+
+  <%= render 'layouts/error_form', model: task %>
+
   <div>
     <%= form.label :name, Task.human_attribute_name(:name), style: "display: block" %>
     <%= form.text_field :name %>
@@ -7,6 +10,11 @@
   <div>
     <%= form.label :detail, Task.human_attribute_name(:detail), style: "display: block" %>
     <%= form.text_field :detail %>
+  </div>
+
+  <div>
+    <%= form.label :deadline, Task.human_attribute_name(:deadline), style: "display: block" %>
+    <%= form.datetime_field :deadline %>
   </div>
 
   <div>

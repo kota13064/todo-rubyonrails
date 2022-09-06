@@ -1,33 +1,36 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[ show edit update destroy ]
+  before_action :set_task, only: %i[show edit update destroy]
 
   def index
-    @tasks = Task.all.order(created_at: :desc)
+    @tasks =
+      if params[:order].present? && params[:order_column].present?
+        Task.all.order(params[:order_column] => params[:order])
+      else
+        Task.all.order(created_at: :desc)
+      end
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @task = Task.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @task = Task.new(task_params)
 
     if @task.save
-      redirect_to task_url(@task), notice: "新規作成されました"
+      redirect_to task_url(@task), notice: '新規作成されました'
     else
-      render :new, status: :unprocessable_entity #HTTP status 422
+      render :new, status: :unprocessable_entity # HTTP status 422
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to task_url(@task), notice: "更新されました"
+      redirect_to task_url(@task), notice: '更新されました'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -35,21 +38,22 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    redirect_to tasks_url, notice: "削除されました"
+    redirect_to tasks_url, notice: '削除されました'
   end
 
-  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  rescue_from ActiveRecord::RecordNotFound, with: :render404
 
-  def render_404
-    render file: 'public/404.html', status: 404, content_type: 'text/html'
+  def render404
+    render file: 'public/404.html', status: :not_found, content_type: 'text/html'
   end
 
   private
-    def set_task
-      @task = Task.find(params[:id])
-    end
 
-    def task_params
-      params.require(:task).permit(:name, :detail)
-    end
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
+  def task_params
+    params.require(:task).permit(:name, :detail, :deadline)
+  end
 end
