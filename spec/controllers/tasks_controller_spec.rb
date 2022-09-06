@@ -9,8 +9,8 @@ RSpec.describe TasksController, type: :request do
 
     context 'ソート条件なし' do
       let!(:task1) { create(:task, created_at: Time.zone.tomorrow) }
-      let!(:task2) { create(:task, created_at: Time.zone.yesterday) }
-      let!(:task3) { create(:task, created_at: Time.zone.today) }
+      let!(:task2) { create(:task, created_at: Time.zone.yesterday, task_status_id: task1.task_status.id) }
+      let!(:task3) { create(:task, created_at: Time.zone.today, task_status_id: task1.task_status.id) }
 
       it '順序がタスクの作成日の降順となっていること' do
         get tasks_path
@@ -20,8 +20,8 @@ RSpec.describe TasksController, type: :request do
 
     context 'ソート条件あり' do
       let!(:task4) { create(:task, deadline: Time.zone.tomorrow) }
-      let!(:task5) { create(:task, deadline: Time.zone.yesterday) }
-      let!(:task6) { create(:task, deadline: Time.zone.today) }
+      let!(:task5) { create(:task, deadline: Time.zone.yesterday, task_status_id: task4.task_status.id) }
+      let!(:task6) { create(:task, deadline: Time.zone.today, task_status_id: task4.task_status.id) }
 
       it '締め切り日の降順でソートが行われること' do
         get tasks_path, params: { order_column: 'deadline', order: 'asc' }
@@ -70,6 +70,7 @@ RSpec.describe TasksController, type: :request do
   end
 
   describe '#create' do
+    let!(:task_status) { create(:task_status) }
     it 'リクエストがステータスコード302でリダイレクトすること' do
       post tasks_path, params: { task: attributes_for(:task) }
       expect(response).to have_http_status :found
