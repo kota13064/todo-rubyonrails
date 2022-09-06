@@ -37,11 +37,11 @@ RSpec.describe TasksController, type: :request do
     context '検索条件あり' do
       let!(:task1) { create(:task) }
       let!(:task2) { create(:task, task_status: create(:task_status, :launch)) }
-      let!(:task3) { create(:task, task_status: create(:task_status, :done)) }
+      let!(:task3) { create(:task, task_status: task2.task_status) }
 
       it 'ステータス検索が行われること' do
         get tasks_path, params: { task_status_id: 2 }
-        expect(controller.instance_variable_get(:@tasks)).to eq [task2]
+        expect(controller.instance_variable_get(:@tasks)).to eq [task3, task2]
       end
 
       it 'タスク名検索が行われること' do
@@ -87,13 +87,14 @@ RSpec.describe TasksController, type: :request do
 
   describe '#create' do
     let!(:task_status) { create(:task_status) }
+
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      post tasks_path, params: { task: attributes_for(:task) }
+      post tasks_path, params: { task: attributes_for(:task), task_status: }
       expect(response).to have_http_status :found
     end
 
     it 'リクエストが作ったタスクのページにリダイレクトすること' do
-      post tasks_path, params: { task: attributes_for(:task) }
+      post tasks_path, params: { task: attributes_for(:task), task_status: }
       expect(response).to redirect_to Task.last
     end
   end
