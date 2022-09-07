@@ -4,7 +4,6 @@ FactoryBot.define do
     sequence(:detail) { |n| "task detail#{n}" }
     deadline { Time.zone.tomorrow }
     task_status_id { 1 }
-
-    association :task_status
+    priority_id { 1 }
   end
 end

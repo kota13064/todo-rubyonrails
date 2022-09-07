@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do
+  before do
+    create(:task_status, :todo)
+    create(:priority, :high)
+  end
+
   context '正常パラメータを送信したとき' do
     it 'バリデーションに引っかからないこと' do
       task = build(:task)
