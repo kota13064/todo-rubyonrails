@@ -18,8 +18,13 @@
   </div>
 
   <div>
-    <%= form.label :task_status_id, Task.human_attribute_name(:task_status_id), style: "display: block" %>
-    <%= form.collection_select(:task_status_id, TaskStatus.all, :id, :name ) %>
+    <%= form.label :task_status_id, TaskStatus.model_name.human, style: "display: block" %>
+    <%= form.collection_select(:task_status_id, TaskStatus.all.order(:id), :id, :name ) %>
+  </div>
+
+  <div>
+    <%= form.label :priority_id, Priority.model_name.human, style: "display: block" %>
+    <%= form.collection_select(:priority_id, Priority.all.order(:id), :id, :name ) %>
   </div>
 
   <div>

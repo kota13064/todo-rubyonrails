@@ -12,12 +12,13 @@
       <%= f.text_field :name, { value: params[:name] } %>
 		</div>
 		<div>
-        <%= f.label :task_status_id, Task.human_attribute_name(:task_status_id) %>
+        <%= f.label :task_status_id, TaskStatus.model_name.human %>
         <%= f.collection_select(:task_status_id, TaskStatus.all, :id, :name, { selected: params[:task_status_id], include_blank: 'なし' }) %>
     </div>
 		<div>
 			<%= f.label :order_column, 'ソート' %>
-			<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"]], { selected: params[:order_column], include_blank: 'なし' } %>
+			<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"], [Priority.model_name.human, "priority_id"]],
+				{ selected: params[:order_column], include_blank: 'なし' } %>
 			<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] } %>
 		</div>
 		<%= f.submit '検索' %>
@@ -31,7 +32,8 @@
 				<th><%= Task.human_attribute_name(:name) %></th>
 				<th><%= Task.human_attribute_name(:detail) %></th>
 				<th><%= Task.human_attribute_name(:deadline) %></th>
-				<th><%= Task.human_attribute_name(:task_status_id) %></th>
+				<th><%= TaskStatus.model_name.human %></th>
+				<th><%= Priority.model_name.human %></th>
 				<th>リンク</th>
 			</tr>
 		</thead>
@@ -41,10 +43,10 @@
 				<td><%= task.id %></td>
 				<td><%= task.name %></td>
 				<td><%= task.detail %></td>
-				<td><%= task.deadline %></td>
-				<td>
-					<%= task.status_name %>
-				</td>
+
+				<td><%= I18n.l task.deadline if task.deadline.present? %></td>
+				<td><%= task.status_name %></td>
+				<td><%= task.priority_name %></td>
 				<td>
 					<%= link_to I18n.t('tasks.show.title'), task %>
 					<%= link_to I18n.t('tasks.edit.title'), edit_task_path(task) %>
