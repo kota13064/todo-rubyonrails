@@ -40,7 +40,7 @@ RSpec.describe TasksController, type: :request do
       let!(:task3) { create(:task, task_status: task2.task_status) }
 
       it 'ステータス検索が行われること' do
-        get tasks_path, params: { task_status_id: 2 }
+        get tasks_path, params: { task_status_id: task2.task_status.id }
         expect(controller.instance_variable_get(:@tasks)).to eq [task3, task2]
       end
 

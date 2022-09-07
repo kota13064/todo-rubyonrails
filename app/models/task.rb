@@ -4,8 +4,7 @@ class Task < ApplicationRecord
   validates :name, presence: true
 
   def self.search(search_params)
-    @tasks = Task
-             .select('tasks.*, task_statuses.name AS status_name')
+    @tasks = select('tasks.*, task_statuses.name AS status_name')
              .joins(:task_status)
              .order(created_at: :desc)
 
