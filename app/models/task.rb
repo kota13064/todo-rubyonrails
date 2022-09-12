@@ -4,12 +4,15 @@ class Task < ApplicationRecord
 
   validates :name, presence: true
 
-  def self.search(search_params)
-    @tasks = select('tasks.*, task_statuses.name AS status_name, priorities.name AS priority_name')
-             .joins(:task_status)
-             .joins(:priority)
-             .order(created_at: :desc)
+  scope :default, lambda {
+    select('tasks.*, task_statuses.name AS status_name, priorities.name AS priority_name')
+      .joins(:task_status)
+      .joins(:priority)
+      .order(created_at: :desc)
+  }
 
+  def self.search(search_params)
+    @tasks = default
     @tasks = @tasks.where('tasks.name LIKE ?', "%#{Task.sanitize_sql_like(search_params[:name])}%") if search_params[:name].present?
     @tasks = @tasks.where(task_status_id: search_params[:task_status_id]) if search_params[:task_status_id].present?
 

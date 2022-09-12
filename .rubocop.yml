@@ -35,7 +35,7 @@ Style/FrozenStringLiteralComment:
 
 # 一つのメソッドに対する処理の複雑さの指標
 Metrics/AbcSize:
-  Max: 21
+  Max: 18
 
 
 # RSpec
