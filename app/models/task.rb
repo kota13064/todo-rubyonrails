@@ -28,5 +28,6 @@ class Task < ApplicationRecord
       .search_by_name(params)
       .search_by_status(params)
       .order_by_column(params)
+      .page(params[:page]).per(10)
   }
 end
