@@ -2,30 +2,38 @@
 
 <h1><%= t ".title" %></h1>
 
-<%= link_to I18n.t('tasks.new.title'), new_task_path %>
+	<div class="d-flex flex-row align-items-end">
 
-<div id="tasks">
-	<div>
-	<%= form_with url:tasks_path, method: :get do |f| %>
-		<div>
-			<%= f.label :name, Task.human_attribute_name(:name) %>
-      <%= f.text_field :name, { value: params[:name] } %>
+		<%= link_to I18n.t('tasks.new.short'), new_task_path, class: 'btn btn-outline-info m-1' %>
+
+		<div class="ms-auto">
+			<%= form_with url:tasks_path, method: :get, class: 'd-flex flex-row align-items-end' do |f| %>
+				<div class="p-1">
+					<%= f.label :name, Task.human_attribute_name(:name), class: 'form-label' %>
+					<%= f.text_field :name, { value: params[:name], class: 'form-control' } %>
+				</div>
+				<div class="p-1 ms-auto">
+					<%= f.label :task_status_id, TaskStatus.model_name.human, class: 'form-label' %>
+					<%= f.collection_select(:task_status_id, TaskStatus.all, :id, :name,
+							{ selected: params[:task_status_id], include_blank: 'なし' }, { class: 'form-select' }) %>
+				</div>
+				<div class="p-1">
+					<%= f.label :order_column, 'ソート', class: 'form-label' %>
+					<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"], [Priority.model_name.human, "priority_id"]],
+						{ selected: params[:order_column], include_blank: 'なし' }, { class: 'form-select' } %>
+				</div>
+				<div class="p-1">
+					<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] }, { class: 'form-select' } %>
+				</div>
+				<div class="p-1">
+					<%= f.submit '検索', class: 'btn btn-outline-primary' %>
+				</div>
+			<% end %>
 		</div>
-		<div>
-        <%= f.label :task_status_id, TaskStatus.model_name.human %>
-        <%= f.collection_select(:task_status_id, TaskStatus.all, :id, :name, { selected: params[:task_status_id], include_blank: 'なし' }) %>
-    </div>
-		<div>
-			<%= f.label :order_column, 'ソート' %>
-			<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"], [Priority.model_name.human, "priority_id"]],
-				{ selected: params[:order_column], include_blank: 'なし' } %>
-			<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] } %>
-		</div>
-		<%= f.submit '検索' %>
-	<% end %>
+		<%= link_to '削除', tasks_path, class: 'btn btn-outline-danger m-1' %>
 	</div>
 
-	<table border="1">
+	<table class="table">
 		<thead>
 			<tr>
 				<th><%= Task.human_attribute_name(:id) %></th>
@@ -42,19 +50,24 @@
 			<tr>
 				<td><%= task.id %></td>
 				<td><%= task.name %></td>
-				<td><%= task.detail %></td>
+				<td><%= simple_format task.detail %></td>
 
 				<td><%= I18n.l task.deadline if task.deadline.present? %></td>
 				<td><%= task.status_name %></td>
 				<td><%= task.priority_name %></td>
 				<td>
-					<%= link_to I18n.t('tasks.show.title'), task %>
-					<%= link_to I18n.t('tasks.edit.title'), edit_task_path(task) %>
+					<%= link_to I18n.t('tasks.show.short'), task, class: 'btn btn-outline-secondary' %>
+					<%= link_to I18n.t('tasks.edit.short'), edit_task_path(task), class: 'btn btn-outline-success' %>
 				</td>
 			</tr>
 		<% end %>
 		</tbody>
 	</table>
-	<%= paginate @tasks %>
-	<%= page_entries_info @tasks %>
-</div>
+	<div class="row">
+		<div class="col-10 d-flex justify-content-center">
+			<%= paginate @tasks, theme: 'bootstrap-5' %>
+		</div>
+		<div class="col-2">
+			<%= page_entries_info @tasks %>
+		</div>
+	</div>

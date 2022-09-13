@@ -1,33 +1,35 @@
-<%= form_with(model: task) do |form| %>
+<%= form_with model: task, class: 'd-flex flex-column' do |form| %>
 
   <%= render 'layouts/error_form', model: task %>
 
-  <div>
-    <%= form.label :name, Task.human_attribute_name(:name), style: "display: block" %>
-    <%= form.text_field :name %>
+  <div class="form-floating p-1">
+    <%= form.text_field :name, { class: 'form-control', placeholder: 'default' } %>
+    <%= form.label :name, Task.human_attribute_name(:name), class: '' %>
   </div>
 
-  <div>
-    <%= form.label :detail, Task.human_attribute_name(:detail), style: "display: block" %>
-    <%= form.text_field :detail %>
+  <div class="p-1">
+    <%= form.label :detail, Task.human_attribute_name(:detail), class: 'form-label' %>
+    <%= form.text_area :detail, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :deadline, Task.human_attribute_name(:deadline), style: "display: block" %>
-    <%= form.datetime_field :deadline %>
+  <div class="d-flex flex-row align-items-end">
+  <div class="p-1">
+    <%= form.label :deadline, Task.human_attribute_name(:deadline), class: 'form-label' %>
+    <%= form.datetime_field :deadline, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :task_status_id, TaskStatus.model_name.human, style: "display: block" %>
-    <%= form.collection_select(:task_status_id, TaskStatus.all.order(:id), :id, :name ) %>
+  <div class="p-1">
+    <%= form.label :task_status_id, TaskStatus.model_name.human, class: 'form-label' %>
+    <%= form.collection_select(:task_status_id, TaskStatus.all.order(:id), :id, :name, {}, { class: 'form-select' } ) %>
   </div>
 
-  <div>
-    <%= form.label :priority_id, Priority.model_name.human, style: "display: block" %>
-    <%= form.collection_select(:priority_id, Priority.all.order(:id), :id, :name ) %>
+  <div class="p-1">
+    <%= form.label :priority_id, Priority.model_name.human, class: 'form-label' %>
+    <%= form.collection_select(:priority_id, Priority.all.order(:id), :id, :name, {}, { class: 'form-select' } ) %>
+  </div>
   </div>
 
-  <div>
-    <%= form.submit '送信' %>
+  <div class="p-1">
+    <%= form.submit '送信', class: 'btn btn-outline-primary' %>
   </div>
 <% end %>
