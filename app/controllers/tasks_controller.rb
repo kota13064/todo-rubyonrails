@@ -53,6 +53,6 @@ class TasksController < ApplicationController
   end
 
   def search_params
-    params.permit(:name, :task_status_id, :order_column, :order, :page)
+    params.permit(:name, :task_status_id, :order_column, :order, :page, :per)
   end
 end

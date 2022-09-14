@@ -26,6 +26,11 @@
 					<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] }, { class: 'form-select' } %>
 				</div>
 				<div class="p-1">
+					<%= f.label :per, '表示件数', class: 'form-label' %>
+					<%= f.select :per, [10, 20, 50],
+						{ selected: params[:per] }, { class: 'form-select' } %>
+				</div>
+				<div class="p-1">
 					<%= button_tag(type: "submit", class: "btn btn-outline-primary") do %>
 						<% bootstrap_icon "search" %>
 					<% end %>
