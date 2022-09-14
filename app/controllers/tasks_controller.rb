@@ -2,12 +2,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
 
   def index
-    @tasks =
-      if params[:order].present? && params[:order_column].present?
-        Task.all.order(params[:order_column] => params[:order])
-      else
-        Task.all.order(created_at: :desc)
-      end
+    @tasks = Task.search(search_params)
   end
 
   def show; end
@@ -54,6 +49,10 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name, :detail, :deadline)
+    params.require(:task).permit(:name, :detail, :deadline, :task_status_id)
+  end
+
+  def search_params
+    params.permit(:name, :task_status_id, :order_column, :order)
   end
 end

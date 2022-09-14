@@ -18,6 +18,11 @@
   </div>
 
   <div>
+    <%= form.label :task_status_id, Task.human_attribute_name(:task_status_id), style: "display: block" %>
+    <%= form.collection_select(:task_status_id, TaskStatus.all, :id, :name ) %>
+  </div>
+
+  <div>
     <%= form.submit '送信' %>
   </div>
 <% end %>

@@ -9,8 +9,8 @@ RSpec.describe TasksController, type: :request do
 
     context 'ソート条件なし' do
       let!(:task1) { create(:task, created_at: Time.zone.tomorrow) }
-      let!(:task2) { create(:task, created_at: Time.zone.yesterday) }
-      let!(:task3) { create(:task, created_at: Time.zone.today) }
+      let!(:task2) { create(:task, created_at: Time.zone.yesterday, task_status: task1.task_status) }
+      let!(:task3) { create(:task, created_at: Time.zone.today, task_status: task1.task_status) }
 
       it '順序がタスクの作成日の降順となっていること' do
         get tasks_path
@@ -19,18 +19,34 @@ RSpec.describe TasksController, type: :request do
     end
 
     context 'ソート条件あり' do
-      let!(:task4) { create(:task, deadline: Time.zone.tomorrow) }
-      let!(:task5) { create(:task, deadline: Time.zone.yesterday) }
-      let!(:task6) { create(:task, deadline: Time.zone.today) }
+      let!(:task1) { create(:task, deadline: Time.zone.tomorrow) }
+      let!(:task2) { create(:task, deadline: Time.zone.yesterday, task_status: task1.task_status) }
+      let!(:task3) { create(:task, deadline: Time.zone.today, task_status: task1.task_status) }
 
       it '締め切り日の降順でソートが行われること' do
         get tasks_path, params: { order_column: 'deadline', order: 'asc' }
-        expect(controller.instance_variable_get(:@tasks)).to eq [task5, task6, task4]
+        expect(controller.instance_variable_get(:@tasks)).to eq [task2, task3, task1]
       end
 
       it '締め切り日の昇順でソートが行われること' do
         get tasks_path, params: { order_column: 'deadline', order: 'desc' }
-        expect(controller.instance_variable_get(:@tasks)).to eq [task4, task6, task5]
+        expect(controller.instance_variable_get(:@tasks)).to eq [task1, task3, task2]
+      end
+    end
+
+    context '検索条件あり' do
+      let!(:task1) { create(:task) }
+      let!(:task2) { create(:task, task_status: create(:task_status, :launch)) }
+      let!(:task3) { create(:task, task_status: task2.task_status) }
+
+      it 'ステータス検索が行われること' do
+        get tasks_path, params: { task_status_id: task2.task_status.id }
+        expect(controller.instance_variable_get(:@tasks)).to eq [task3, task2]
+      end
+
+      it 'タスク名検索が行われること' do
+        get tasks_path, params: { name: task1.name }
+        expect(controller.instance_variable_get(:@tasks)).to eq [task1]
       end
     end
   end
@@ -70,42 +86,53 @@ RSpec.describe TasksController, type: :request do
   end
 
   describe '#create' do
+    subject(:request) do
+      post tasks_path, params: { task: attributes_for(:task), task_status: }
+      response
+    end
+
+    let!(:task_status) { create(:task_status) }
+
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      post tasks_path, params: { task: attributes_for(:task) }
-      expect(response).to have_http_status :found
+      expect(request).to have_http_status :found
     end
 
     it 'リクエストが作ったタスクのページにリダイレクトすること' do
-      post tasks_path, params: { task: attributes_for(:task) }
-      expect(response).to redirect_to Task.last
+      expect(request).to redirect_to Task.last
     end
   end
 
   describe '#update' do
+    subject(:request) do
+      put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
+      response
+    end
+
     let!(:task) { create(:task) }
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
-      expect(response).to have_http_status :found
+      expect(request).to have_http_status :found
     end
 
     it 'リクエストが編集したタスクのページにリダイレクトすること' do
-      put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
-      expect(response).to redirect_to Task.last
+      expect(request).to redirect_to Task.last
     end
   end
 
   describe '#destroy' do
+    subject(:request) do
+      delete task_path task
+      response
+    end
+
     let!(:task) { create(:task) }
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      delete task_path task
-      expect(response).to have_http_status :found
+      expect(request).to have_http_status :found
     end
 
     it 'リクエストがタスク一覧ページにリダイレクトすること' do
-      delete task_path task
-      expect(response).to redirect_to(tasks_path)
+      expect(request).to redirect_to(tasks_path)
     end
   end
 end

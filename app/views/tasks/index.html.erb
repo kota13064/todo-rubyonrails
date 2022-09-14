@@ -5,12 +5,24 @@
 <%= link_to I18n.t('tasks.new.title'), new_task_path %>
 
 <div id="tasks">
+	<div>
 	<%= form_with url:tasks_path, method: :get do |f| %>
-		<%= f.label :order_column, 'ソート' %>
-		<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"]], { selected: params[:order_column], include_blank: 'なし' } %>
-		<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order], include_blank: 'なし' } %>
+		<div>
+			<%= f.label :name, Task.human_attribute_name(:name) %>
+      <%= f.text_field :name, { value: params[:name] } %>
+		</div>
+		<div>
+        <%= f.label :task_status_id, Task.human_attribute_name(:task_status_id) %>
+        <%= f.collection_select(:task_status_id, TaskStatus.all, :id, :name, { selected: params[:task_status_id], include_blank: 'なし' }) %>
+    </div>
+		<div>
+			<%= f.label :order_column, 'ソート' %>
+			<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"]], { selected: params[:order_column], include_blank: 'なし' } %>
+			<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] } %>
+		</div>
 		<%= f.submit '検索' %>
 	<% end %>
+	</div>
 
 	<table border="1">
 		<thead>
@@ -19,6 +31,7 @@
 				<th><%= Task.human_attribute_name(:name) %></th>
 				<th><%= Task.human_attribute_name(:detail) %></th>
 				<th><%= Task.human_attribute_name(:deadline) %></th>
+				<th><%= Task.human_attribute_name(:task_status_id) %></th>
 				<th>リンク</th>
 			</tr>
 		</thead>
@@ -29,6 +42,9 @@
 				<td><%= task.name %></td>
 				<td><%= task.detail %></td>
 				<td><%= task.deadline %></td>
+				<td>
+					<%= task.status_name %>
+				</td>
 				<td>
 					<%= link_to I18n.t('tasks.show.title'), task %>
 					<%= link_to I18n.t('tasks.edit.title'), edit_task_path(task) %>
