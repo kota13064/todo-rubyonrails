@@ -65,7 +65,7 @@ RSpec.describe TasksController, type: :request do
   end
 
   describe '#show' do
-    subject(:request) do
+    subject(:get_request) do
       get task_path task
       response
     end
@@ -74,27 +74,27 @@ RSpec.describe TasksController, type: :request do
       let!(:task) { create(:task) }
 
       it 'リクエストがステータスコード200で成功すること' do
-        expect(request).to have_http_status :ok
+        expect(get_request).to have_http_status :ok
       end
 
       it 'レスポンスにタスク名が含まれていること' do
-        expect(request.body).to include task.name
+        expect(get_request.body).to include task.name
       end
 
       it 'レスポンスに詳細が含まれていること' do
-        expect(request.body).to include task.detail
+        expect(get_request.body).to include task.detail
       end
 
       it 'レスポンスに終了期限が含まれていること' do
-        expect(request.body).to include I18n.l task.deadline
+        expect(get_request.body).to include I18n.l task.deadline
       end
 
       it 'レスポンスにステータスが含まれていること' do
-        expect(request.body).to include task.task_status.name
+        expect(get_request.body).to include task.task_status.name
       end
 
       it 'レスポンスに優先度が含まれていること' do
-        expect(request.body).to include task.priority.name
+        expect(get_request.body).to include task.priority.name
       end
     end
 
@@ -123,22 +123,22 @@ RSpec.describe TasksController, type: :request do
   end
 
   describe '#create' do
-    subject(:request) do
+    subject(:post_request) do
       post tasks_path, params: { task: attributes_for(:task) }
       response
     end
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      expect(request).to have_http_status :found
+      expect(post_request).to have_http_status :found
     end
 
     it 'リクエストが作ったタスクのページにリダイレクトすること' do
-      expect(request).to redirect_to Task.last
+      expect(post_request).to redirect_to Task.last
     end
   end
 
   describe '#update' do
-    subject(:request) do
+    subject(:put_request) do
       put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
       response
     end
@@ -146,16 +146,16 @@ RSpec.describe TasksController, type: :request do
     let!(:task) { create(:task) }
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      expect(request).to have_http_status :found
+      expect(put_request).to have_http_status :found
     end
 
     it 'リクエストが編集したタスクのページにリダイレクトすること' do
-      expect(request).to redirect_to Task.last
+      expect(put_request).to redirect_to Task.last
     end
   end
 
   describe '#destroy' do
-    subject(:request) do
+    subject(:delete_request) do
       delete task_path task
       response
     end
@@ -163,11 +163,11 @@ RSpec.describe TasksController, type: :request do
     let!(:task) { create(:task) }
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      expect(request).to have_http_status :found
+      expect(delete_request).to have_http_status :found
     end
 
     it 'リクエストがタスク一覧ページにリダイレクトすること' do
-      expect(request).to redirect_to(tasks_path)
+      expect(delete_request).to redirect_to(tasks_path)
     end
   end
 end
