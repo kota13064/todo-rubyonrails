@@ -19,11 +19,11 @@
 				</div>
 				<div class="p-1">
 					<%= f.label :order_column, 'ソート', class: 'form-label' %>
-					<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"], [Priority.model_name.human, "priority_id"]],
-						{ selected: params[:order_column], include_blank: 'なし' }, { class: 'form-select' } %>
-				</div>
-				<div class="p-1">
-					<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] }, { class: 'form-select' } %>
+					<div class="input-group">
+						<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"], [Priority.model_name.human, "priority_id"]],
+							{ selected: params[:order_column], include_blank: 'なし' }, { class: 'form-select', style: 'width:58%' } %>
+						<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] }, { class: 'form-select', style: 'width:42%' } %>
+					</div>
 				</div>
 				<div class="p-1">
 					<%= f.label :per, '表示件数', class: 'form-label' %>
