@@ -1,37 +1,41 @@
 <%= render 'layouts/notice' %>
 
 <h1><%= t ".title" %></h1>
-<div>
-  <p>
-    <strong><%= Task.human_attribute_name(:name) %> : </strong>
-    <%= @task.name %>
-  </p>
 
-  <p>
-    <strong><%= Task.human_attribute_name(:detail) %> : </strong>
-    <%= simple_format @task.detail %>
-  </p>
+<table class="d-flex table table-bordered">
+  <tbody>
+    <tr>
+			<td><strong><%= Task.human_attribute_name(:name) %></strong></td>
+      <td><%= @task.name %></td>
+    </tr>
+    <tr>
+			<td><strong><%= Task.human_attribute_name(:detail) %></strong></td>
+      <td><%= simple_format @task.detail %></td>
+    </tr>
+    <tr>
+			<td><strong><%= Task.human_attribute_name(:deadline) %></strong></td>
+      <td><%= I18n.l @task.deadline if @task.deadline.present? %></td>
+    </tr>
+    <tr>
+			<td><strong><%= TaskStatus.model_name.human %></strong></td>
+      <td>
+        <% if @task.task_status.present? %>
+          <%= @task.task_status.name %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+			<td><strong><%= Priority.model_name.human %></strong></td>
+      <td>
+        <% if @task.priority.present? %>
+          <%= @task.priority.name %>
+        <% end %>
+      </td>
+    </tr>
+	</tbody>
+</table>
 
-  <p>
-    <strong><%= Task.human_attribute_name(:deadline) %> : </strong>
-    <%= I18n.l @task.deadline if @task.deadline.present? %>
-  </p>
 
-  <p>
-    <strong><%= TaskStatus.model_name.human %> : </strong>
-    <% if @task.task_status.present? %>
-			<%= @task.task_status.name %>
-		<% end %>
-  </p>
-
-  <p>
-    <strong><%= Priority.model_name.human %> : </strong>
-    <% if @task.priority.present? %>
-			<%= @task.priority.name %>
-		<% end %>
-  </p>
-
-</div>
 
 <div class="d-flex flex-row">
   <%= link_to I18n.t('tasks.edit.title'), edit_task_path, class: 'btn btn-outline-success m-2' %>
