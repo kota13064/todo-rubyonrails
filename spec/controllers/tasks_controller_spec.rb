@@ -49,7 +49,7 @@ RSpec.describe TasksController, type: :request do
 
     context '検索条件あり' do
       let!(:task1) { create(:task, task_status:) }
-      let!(:task2) { create(:task, task_status: create(:task_status, :launch)) }
+      let!(:task2) { create(:task, task_status: create(:task_status, :doing)) }
       let!(:task3) { create(:task, task_status: task2.task_status) }
 
       it 'ステータス検索が行われること' do
@@ -65,37 +65,36 @@ RSpec.describe TasksController, type: :request do
   end
 
   describe '#show' do
+    subject(:request) do
+      get task_path task
+      response
+    end
+
     context 'リクエストしたタスクが存在しているとき' do
       let!(:task) { create(:task) }
 
       it 'リクエストがステータスコード200で成功すること' do
-        get task_path task
-        expect(response).to have_http_status :ok
+        expect(request).to have_http_status :ok
       end
 
       it 'レスポンスにタスク名が含まれていること' do
-        get task_path task
-        expect(response.body).to include task.name
+        expect(request.body).to include task.name
       end
 
       it 'レスポンスに詳細が含まれていること' do
-        get task_path task
-        expect(response.body).to include task.detail
+        expect(request.body).to include task.detail
       end
 
       it 'レスポンスに終了期限が含まれていること' do
-        get task_path task
-        expect(response.body).to include I18n.l task.deadline
+        expect(request.body).to include I18n.l task.deadline
       end
 
       it 'レスポンスにステータスが含まれていること' do
-        get task_path task
-        expect(response.body).to include task.task_status.name
+        expect(request.body).to include task.task_status.name
       end
 
       it 'レスポンスに優先度が含まれていること' do
-        get task_path task
-        expect(response.body).to include task.priority.name
+        expect(request.body).to include task.priority.name
       end
     end
 
@@ -124,42 +123,51 @@ RSpec.describe TasksController, type: :request do
   end
 
   describe '#create' do
-    it 'リクエストがステータスコード302でリダイレクトすること' do
+    subject(:request) do
       post tasks_path, params: { task: attributes_for(:task) }
-      expect(response).to have_http_status :found
+      response
+    end
+
+    it 'リクエストがステータスコード302でリダイレクトすること' do
+      expect(request).to have_http_status :found
     end
 
     it 'リクエストが作ったタスクのページにリダイレクトすること' do
-      post tasks_path, params: { task: attributes_for(:task) }
-      expect(response).to redirect_to Task.last
+      expect(request).to redirect_to Task.last
     end
   end
 
   describe '#update' do
+    subject(:request) do
+      put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
+      response
+    end
+
     let!(:task) { create(:task) }
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
-      expect(response).to have_http_status :found
+      expect(request).to have_http_status :found
     end
 
     it 'リクエストが編集したタスクのページにリダイレクトすること' do
-      put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
-      expect(response).to redirect_to Task.last
+      expect(request).to redirect_to Task.last
     end
   end
 
   describe '#destroy' do
+    subject(:request) do
+      delete task_path task
+      response
+    end
+
     let!(:task) { create(:task) }
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      delete task_path task
-      expect(response).to have_http_status :found
+      expect(request).to have_http_status :found
     end
 
     it 'リクエストがタスク一覧ページにリダイレクトすること' do
-      delete task_path task
-      expect(response).to redirect_to(tasks_path)
+      expect(request).to redirect_to(tasks_path)
     end
   end
 end
