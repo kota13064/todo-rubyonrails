@@ -33,11 +33,6 @@ Layout/LineLength:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-# 一つのメソッドに対する処理の複雑さの指標
-Metrics/AbcSize:
-  Max: 20
-
-
 # RSpec
 
 # Start context description with 'when', 'with', or 'without'

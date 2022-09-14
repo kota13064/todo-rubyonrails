@@ -1,0 +1,6 @@
+ja:
+  hello: "こんにちは 世界"
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M"
+      long: "%Y/%m/%d %H:%M:%S"

@@ -4,15 +4,18 @@ ja:
     models:
       task: タスク
       task_status: ステータス
+      priority: 優先度
     attributes:
       task:
         name: タスク名
         detail: 詳細
         deadline: 終了期限
-        task_status_id: ステータス
+        task_status_id: ステータスID
+        priority_id: 優先度ID
       task_status:
-        id: ID
         name: ステータス
+      priority:
+        name: 優先度
   attributes:
     id: ID
     created_at: 作成日

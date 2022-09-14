@@ -1,18 +1,32 @@
 class Task < ApplicationRecord
   belongs_to :task_status
+  belongs_to :priority
 
   validates :name, presence: true
 
-  def self.search(search_params)
-    @tasks = select('tasks.*, task_statuses.name AS status_name')
-             .joins(:task_status)
-             .order(created_at: :desc)
+  scope :default, lambda {
+    select('tasks.*, task_statuses.name AS status_name, priorities.name AS priority_name')
+      .joins(:task_status)
+      .joins(:priority)
+      .order(created_at: :desc)
+  }
 
-    @tasks = @tasks.where('tasks.name LIKE ?', "%#{Task.sanitize_sql_like(search_params[:name])}%") if search_params[:name].present?
-    @tasks = @tasks.where(task_status_id: search_params[:task_status_id]) if search_params[:task_status_id].present?
+  scope :order_by_column, lambda { |params|
+    reorder(params[:order_column] => params[:order]) if params[:order].present? && params[:order_column].present?
+  }
 
-    @tasks = @tasks.reorder(search_params[:order_column] => search_params[:order]) if search_params[:order].present? && search_params[:order_column].present?
+  scope :search_by_name, lambda { |params|
+    where('tasks.name LIKE ?', "%#{Task.sanitize_sql_like(params[:name])}%") if params[:name].present?
+  }
 
-    @tasks
-  end
+  scope :search_by_status, lambda { |params|
+    where(task_status_id: params[:task_status_id]) if params[:task_status_id].present?
+  }
+
+  scope :search, lambda { |params|
+    default
+      .search_by_name(params)
+      .search_by_status(params)
+      .order_by_column(params)
+  }
 end
