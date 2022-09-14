@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :task_status do
-    trait 'todo' do
+    trait :todo do
       id { 1 }
       name { '未着手' }
     end
 
-    trait :launch do
+    trait :doing do
       id { 2 }
       name { '着手中' }
     end
