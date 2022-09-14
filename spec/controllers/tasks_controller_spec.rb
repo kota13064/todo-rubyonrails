@@ -86,44 +86,53 @@ RSpec.describe TasksController, type: :request do
   end
 
   describe '#create' do
+    subject(:request) do
+      post tasks_path, params: { task: attributes_for(:task), task_status: }
+      response
+    end
+
     let!(:task_status) { create(:task_status) }
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      post tasks_path, params: { task: attributes_for(:task), task_status: }
-      expect(response).to have_http_status :found
+      expect(request).to have_http_status :found
     end
 
     it 'リクエストが作ったタスクのページにリダイレクトすること' do
-      post tasks_path, params: { task: attributes_for(:task), task_status: }
-      expect(response).to redirect_to Task.last
+      expect(request).to redirect_to Task.last
     end
   end
 
   describe '#update' do
+    subject(:request) do
+      put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
+      response
+    end
+
     let!(:task) { create(:task) }
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
-      expect(response).to have_http_status :found
+      expect(request).to have_http_status :found
     end
 
     it 'リクエストが編集したタスクのページにリダイレクトすること' do
-      put task_path task, params: { task: attributes_for(:task, name: 'update name', detail: 'update detail') }
-      expect(response).to redirect_to Task.last
+      expect(request).to redirect_to Task.last
     end
   end
 
   describe '#destroy' do
+    subject(:request) do
+      delete task_path task
+      response
+    end
+
     let!(:task) { create(:task) }
 
     it 'リクエストがステータスコード302でリダイレクトすること' do
-      delete task_path task
-      expect(response).to have_http_status :found
+      expect(request).to have_http_status :found
     end
 
     it 'リクエストがタスク一覧ページにリダイレクトすること' do
-      delete task_path task
-      expect(response).to redirect_to(tasks_path)
+      expect(request).to redirect_to(tasks_path)
     end
   end
 end
