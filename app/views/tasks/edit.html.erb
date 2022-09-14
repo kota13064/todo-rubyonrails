@@ -4,7 +4,7 @@
 
 <br>
 
-<div>
-  <%= link_to I18n.t('tasks.show.title'), @task, class: 'btn btn-outline-secondary' %> |
-  <%= link_to I18n.t('tasks.index.title'), tasks_path, class: 'btn btn-outline-secondary' %>
+<div class="d-flex flex-row">
+  <%= link_to I18n.t('tasks.show.title'), @task, class: 'btn btn-outline-secondary m-2' %>
 </div>
+  <%= link_to I18n.t('tasks.index.title'), tasks_path, class: 'btn btn-outline-secondary m-2' %>
