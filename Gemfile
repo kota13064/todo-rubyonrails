@@ -65,5 +65,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'bootstrap'
 gem 'bootstrap5-kaminari-views'
+gem 'bootstrap-icons'
+gem 'bootstrap-icons-helper'
 gem 'kaminari'
 gem 'rails-i18n', '~> 7.0.0'

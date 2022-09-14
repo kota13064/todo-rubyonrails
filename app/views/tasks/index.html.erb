@@ -26,11 +26,13 @@
 					<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] }, { class: 'form-select' } %>
 				</div>
 				<div class="p-1">
-					<%= f.submit '検索', class: 'btn btn-outline-primary' %>
+					<%= button_tag(type: "submit", class: "btn btn-outline-primary") do %>
+						<% bootstrap_icon "search" %>
+					<% end %>
 				</div>
 			<% end %>
 		</div>
-		<%= link_to '削除', tasks_path, class: 'btn btn-outline-danger m-1' %>
+		<%= link_to bootstrap_icon("trash3"), tasks_path, class: 'btn btn-outline-danger m-1' %>
 	</div>
 
 	<table class="table">
