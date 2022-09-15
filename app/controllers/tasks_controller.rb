@@ -17,7 +17,7 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
 
     if @task.save
-      redirect_to task_url(@task), notice: '新規作成されました'
+      redirect_to task_url(@task), notice: I18n.t('notice.create')
     else
       render :new, status: :unprocessable_entity # HTTP status 422
     end
@@ -25,7 +25,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to task_url(@task), notice: '更新されました'
+      redirect_to task_url(@task), notice: I18n.t('notice.update')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -33,7 +33,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    redirect_to tasks_url, notice: '削除されました'
+    redirect_to tasks_url, notice: I18n.t('notice.destroy')
   end
 
   rescue_from ActiveRecord::RecordNotFound, with: :render404
@@ -53,6 +53,6 @@ class TasksController < ApplicationController
   end
 
   def search_params
-    params.permit(:name, :task_status_id, :order_column, :order, :page)
+    params.permit(:name, :task_status_id, :order_column, :order, :page, :per)
   end
 end

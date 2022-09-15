@@ -5,7 +5,10 @@ ja:
       title: 'タスク一覧'
     show:
       title: 'タスクを閲覧'
+      short: '閲覧'
     edit:
       title: 'タスクを編集'
+      short: '編集'
     new:
       title: 'タスクを新規作成'
+      short: '新規作成'
