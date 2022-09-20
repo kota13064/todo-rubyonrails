@@ -1,4 +1,4 @@
-<h1><%= t ".title" %></h1>
+<h1><%= I18n.t "tasks.show.title" %></h1>
 
 <%= render 'layouts/notice' %>
 
@@ -35,11 +35,9 @@
 	</tbody>
 </table>
 
-
-
 <div class="d-flex flex-row">
   <%= link_to I18n.t('tasks.edit.title'), edit_task_path, class: 'btn btn-outline-success m-2' %>
-  <%= button_to "このタスクを削除", @task, method: :delete, class: 'btn btn-danger m-2' %>
+  <%= button_to I18n.t('tasks.destroy.title'), @task, method: :delete, class: 'btn btn-danger m-2' %>
 </div>
 
   <%= link_to I18n.t('tasks.index.title'), tasks_path, class: 'btn btn-outline-secondary m-2' %>

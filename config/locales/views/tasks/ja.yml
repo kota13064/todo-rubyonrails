@@ -2,13 +2,16 @@
 ja:
   tasks:
     index:
-      title: 'タスク一覧'
+      title: タスク一覧
     show:
-      title: 'タスクを閲覧'
-      short: '閲覧'
+      title: タスクを閲覧
+      short: 閲覧
     edit:
-      title: 'タスクを編集'
-      short: '編集'
+      title: タスクを編集
+      short: 編集
     new:
-      title: 'タスクを新規作成'
-      short: '新規作成'
+      title: タスクを新規作成
+      short: 新規作成
+    destroy:
+      title: タスクを削除
+      short: 削除
