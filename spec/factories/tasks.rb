@@ -5,5 +5,6 @@ FactoryBot.define do
     deadline { Time.zone.tomorrow }
     task_status_id { 1 }
     priority_id { 1 }
+    user
   end
 end
