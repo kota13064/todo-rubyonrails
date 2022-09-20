@@ -1,0 +1,18 @@
+<div class="m-auto" style="max-width: 350px;" >
+  <h1 style="text-align: center;">ログイン</h1>
+
+  <%= form_with model: @session, local: true do |form| %>
+    <%= flash[:danger] %>
+
+    <div class="p-1 form-floating">
+      <%= form.email_field :email, { class: 'form-control', placeholder: "name@example.com" } %>
+      <%= form.label :email, 'メールアドレス' %>
+    </div>
+    <div class="p-1 form-floating">
+      <%= form.password_field :password, { class: 'form-control', placeholder: "password" } %>
+      <%= form.label :password, 'パスワード' %>
+    </div>
+
+      <%= form.submit 'ログイン', class: 'p-1 w-100 btn btn-lg btn-primary' %>
+  <% end %>
+</div>
