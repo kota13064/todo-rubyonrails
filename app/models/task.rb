@@ -31,4 +31,8 @@ class Task < ApplicationRecord
       .order_by_column(params[:order_column], params[:order])
       .page(params[:page]).per(params[:per])
   }
+
+  scope :select_user, lambda { |user_id|
+    where(user_id:)
+  }
 end
