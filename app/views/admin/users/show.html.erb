@@ -1,0 +1,27 @@
+<h1><%= I18n.t "users.show.title" %></h1>
+
+<%= render 'layouts/notice' %>
+
+<table class="d-flex table table-bordered">
+  <tbody>
+    <tr>
+			<td><strong><%= User.human_attribute_name(:name) %></strong></td>
+      <td><%= @user.name %></td>
+    </tr>
+    <tr>
+			<td><strong><%= User.human_attribute_name(:email) %></strong></td>
+      <td><%= @user.email %></td>
+    </tr>
+    <tr>
+			<td><strong><%= User.human_attribute_name(:count_of_tasks) %></strong></td>
+      <td><%= @user.count_of_tasks %></td>
+    </tr>
+	</tbody>
+</table>
+
+<div class="d-flex flex-row">
+  <%= link_to I18n.t('users.edit.title'), edit_admin_user_path(@user), class: 'btn btn-outline-success m-2' %>
+  <%= button_to I18n.t('users.destroy.title'), admin_user_path(@user), method: :delete, data:{ confirm: '本当に削除してよろしいですか？'}, class: 'btn btn-danger m-2' %>
+</div>
+
+  <%= link_to I18n.t('users.index.title'), admin_users_path, class: 'btn btn-outline-secondary m-2' %>

@@ -1,0 +1,28 @@
+<%= render 'layouts/error_form', model: user %>
+
+<%= form_with model: user, url:, method:, class: 'd-flex flex-column', html: { style: "max-width: 400px;" } do |form| %>
+  <div class="p-1">
+    <%= form.label :name, User.human_attribute_name(:name), class: 'form-label' %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="p-1">
+    <%= form.label :email, User.human_attribute_name(:email), class: 'form-label' %>
+    <%= form.text_field :email, class: 'form-control' %>
+  </div>
+
+  <div class="p-1">
+    <%= form.label :password, User.human_attribute_name(:password), class: 'form-label' %>
+    <%= form.password_field :password, class: 'form-control' %>
+  </div>
+
+  <div class="p-1 form-check">
+    <%= form.label :admin, User.human_attribute_name(:admin), class: 'form-check-label' %>
+    <br />
+    <%= form.check_box :admin, class: 'form-check-inpu' %>
+  </div>
+
+  <div class="p-1">
+    <%= form.submit I18n.t('form.submit'), class: 'btn btn-outline-primary' %>
+  </div>
+<% end %>

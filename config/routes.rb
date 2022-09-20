@@ -3,7 +3,11 @@ Rails.application.routes.draw do
 
   resources :tasks
 
+  namespace :admin do
+    resources :users
+  end
+
   get '/login', to: 'user_sessions#new', as: 'login'
   post '/login', to: 'user_sessions#create'
-  delete '/logout', to: 'user_sessions#destroy'
+  delete '/logout', to: 'user_sessions#destroy', as: 'logout'
 end

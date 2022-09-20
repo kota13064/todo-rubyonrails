@@ -1,0 +1,10 @@
+<h1><%= I18n.t "users.edit.title" %></h1>
+
+<%= render "form", user: @user, url: admin_user_path, method: :patch %>
+
+<br>
+
+<div>
+  <%= link_to I18n.t('users.show.title'), admin_user_path(@user), class: 'btn btn-outline-secondary m-2' %> |
+  <%= link_to I18n.t('users.index.title'), admin_users_path, class: 'btn btn-outline-secondary m-2' %>
+</div>

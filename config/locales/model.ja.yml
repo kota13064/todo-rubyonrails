@@ -5,6 +5,7 @@ ja:
       task: タスク
       task_status: ステータス
       priority: 優先度
+      user: ユーザー
     attributes:
       task:
         name: タスク名
@@ -12,10 +13,18 @@ ja:
         deadline: 終了期限
         task_status_id: ステータスID
         priority_id: 優先度ID
+        user: ユーザー
+        user_id: ユーザーID
       task_status:
         name: ステータス
       priority:
         name: 優先度
+      user:
+        name: ユーザー名
+        email: メールアドレス
+        password: パスワード
+        admin: 管理者権限
+        count_of_tasks: タスク数
   attributes:
     id: ID
     created_at: 作成日
