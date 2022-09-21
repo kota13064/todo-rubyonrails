@@ -6,7 +6,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <% if logged_in? && current_user.admin? %>
+        <% if logged_in? && current_user.is_admin? %>
             <li class="nav-item">
               <%= link_to 'ユーザー管理', "/admin/users", class: 'nav-link' %>
             </li>
