@@ -23,7 +23,7 @@ ja:
         name: ユーザー名
         email: メールアドレス
         password: パスワード
-        admin: 管理者権限
+        is_admin: 管理者権限
         count_of_tasks: タスク数
   attributes:
     id: ID

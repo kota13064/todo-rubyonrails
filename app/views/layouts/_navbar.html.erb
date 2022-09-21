@@ -5,25 +5,30 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <% if logged_in? && current_user.is_admin? %>
-            <li class="nav-item">
-              <%= link_to 'ユーザー管理', "/admin/users", class: 'nav-link' %>
-            </li>
+          <li class="nav-item">
+            <%= link_to 'ユーザー管理', "/admin/users", class: 'nav-link' %>
+          </li>
         <% end %>
-          </ul>
-          <ul class="navbar-nav mb-2 mb-lg-0">
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0">
         <% if logged_in? %>
-            <li class="nav-item">
-              <a class="nav-link">
-                <%= current_user.email %>
-              </a>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'ログアウト', logout_path, class: 'nav-link', method: :delete %>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link">
+              <%= current_user.name %>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link">
+              <%= current_user.email %>
+            </a>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'ログアウト', logout_path, class: 'nav-link', method: :delete %>
+          </li>
         <% end %>
-          </ul>
+      </ul>
     </div>
   </div>
 </nav>

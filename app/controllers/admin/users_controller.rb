@@ -50,7 +50,7 @@ module Admin
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :admin)
+      params.require(:user).permit(:name, :email, :password, :is_admin)
     end
 
     def admin_user
