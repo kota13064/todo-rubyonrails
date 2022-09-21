@@ -1,18 +1,24 @@
 <div class="m-auto" style="max-width: 350px;" >
   <h1 style="text-align: center;">ログイン</h1>
 
-  <%= form_with model: @session, local: true do |form| %>
-    <%= flash[:danger] %>
+  <% if flash[:danger] %>
+    <div class="d-flex">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= flash[:danger] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  <% end %>
 
-    <div class="p-1 form-floating">
+  <%= form_with do |form| %>
+    <div class="form-floating">
       <%= form.email_field :email, { class: 'form-control', placeholder: "name@example.com" } %>
       <%= form.label :email, 'メールアドレス' %>
     </div>
-    <div class="p-1 form-floating">
+    <div class="mt-2 form-floating">
       <%= form.password_field :password, { class: 'form-control', placeholder: "password" } %>
       <%= form.label :password, 'パスワード' %>
     </div>
-
-      <%= form.submit 'ログイン', class: 'p-1 w-100 btn btn-lg btn-primary' %>
+    <%= form.submit 'ログイン', class: 'mt-4 p-2 w-100 btn btn-lg btn-primary' %>
   <% end %>
 </div>
