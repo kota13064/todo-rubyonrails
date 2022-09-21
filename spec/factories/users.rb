@@ -3,10 +3,10 @@ FactoryBot.define do
     sequence(:name) { |n| "test name#{n}" }
     sequence(:email) { |n| "test_email#{n}@test.com" }
     sequence(:password) { |n| "password#{n}" }
-    admin { false }
+    is_admin { false }
 
     trait :admin do
-      admin { true }
+      is_admin { true }
     end
   end
 end

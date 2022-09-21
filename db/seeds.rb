@@ -36,13 +36,13 @@ User.create!(
       email: 'test1@test.com',
       name: 'test admin',
       password: 'password111111',
-      admin: true
+      is_admin: true
     },
     {
       email: 'test2@test.com',
       name: 'test general',
       password: 'password222222',
-      admin: false
+      is_admin: false
     }
   ]
 )
