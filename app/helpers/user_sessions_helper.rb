@@ -17,6 +17,6 @@ module UserSessionsHelper
 
   def log_out
     session.delete(:user_id)
-    @current_user = nil
+    remove_instance_variable(:@current_user)
   end
 end
