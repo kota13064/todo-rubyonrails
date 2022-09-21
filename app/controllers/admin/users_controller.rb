@@ -10,6 +10,8 @@ module Admin
 
     def show
       @user = User.default.find(params[:id])
+      tasks_search_params[:per] = 10 if tasks_search_params[:per].present?
+      @tasks = Task.search(tasks_search_params).select_user(@user.id)
     end
 
     def new
@@ -57,6 +59,10 @@ module Admin
 
     def search_params
       params.permit(:page, :per)
+    end
+
+    def tasks_search_params
+      params.permit(:name, :task_status_id, :order_column, :order, :page, :per)
     end
   end
 end
