@@ -6,6 +6,7 @@ ja:
       task_status: ステータス
       priority: 優先度
       user: ユーザー
+      tag: タグ
     attributes:
       task:
         name: タスク名
@@ -19,6 +20,8 @@ ja:
         name: ステータス
       priority:
         name: 優先度
+      tag:
+        name: タグ名
       user:
         name: ユーザー名
         email: メールアドレス
