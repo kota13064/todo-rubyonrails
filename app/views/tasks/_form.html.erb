@@ -53,7 +53,6 @@
         $.post("/tags", { tag: { name: data.name } })
         .done((responseJSON) => {
           // 新しいタグのselect optionを作って、IDを選択済に追加
-          console.log(responseJSON)
           select_value.push(responseJSON.id)
           select2_obj.append(new Option(data.name, responseJSON.id)).trigger('change')
           select2_obj.val(select_value).trigger('change')

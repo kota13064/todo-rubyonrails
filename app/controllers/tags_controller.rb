@@ -1,4 +1,6 @@
 class TagsController < ApplicationController
+  before_action :require_login
+
   def index
     tags = Tag.search(search_params).reselect(:id, :name)
     render json: tags
