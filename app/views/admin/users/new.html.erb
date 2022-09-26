@@ -1,0 +1,9 @@
+<h1><%= I18n.t "users.new.title" %></h1>
+
+<%= render "form", user: @user, url: admin_users_path, method: :post %>
+
+<br>
+
+<div>
+  <%= link_to I18n.t('users.index.title'), admin_users_path, class: 'btn btn-outline-secondary' %>
+</div>

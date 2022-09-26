@@ -1,0 +1,43 @@
+<h1><%= I18n.t "users.index.title" %></h1>
+
+<%= render 'layouts/notice' %>
+
+<div class="d-flex flex-row align-items-end">
+	<%= link_to I18n.t('users.new.short'), new_admin_user_path, class: 'btn btn-outline-info m-1' %>
+</div>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th><%= User.human_attribute_name(:id) %></th>
+			<th><%= User.human_attribute_name(:name) %></th>
+			<th><%= User.human_attribute_name(:email) %></th>
+			<th><%= User.human_attribute_name(:is_admin) %></th>
+      <th><%= User.human_attribute_name(:count_of_tasks) %></th>
+			<th>リンク</th>
+		</tr>
+	</thead>
+	<tbody>
+	<% @users.preload(:tasks).each do |user| %>
+		<tr>
+			<td><%= user.id %></td>
+			<td><%= user.name %></td>
+			<td><%= user.email %></td>
+			<td><%= user.is_admin ? '管理者' : '一般' %></td>
+      <td><%= user.tasks.size %></td>
+			<td>
+				<%= link_to I18n.t('users.show.short'), admin_user_path(user), class: 'btn btn-outline-secondary' %>
+				<%= link_to I18n.t('users.edit.short'), edit_admin_user_path(user), class: 'btn btn-outline-success' %>
+			</td>
+		</tr>
+	<% end %>
+	</tbody>
+</table>
+<div class="row">
+	<div class="col-10 d-flex justify-content-center">
+		<%= paginate @users, theme: 'bootstrap-5' %>
+	</div>
+	<div class="col-2">
+		<%= page_entries_info @users %>
+	</div>
+</div>

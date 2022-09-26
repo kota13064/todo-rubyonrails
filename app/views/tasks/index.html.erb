@@ -1,80 +1,79 @@
-<h1><%= t ".title" %></h1>
+<h1><%= I18n.t "tasks.index.title" %></h1>
 
 <%= render 'layouts/notice' %>
 
-	<div class="d-flex flex-row align-items-end">
+<div class="d-flex flex-row align-items-end">
 
-		<%= link_to I18n.t('tasks.new.short'), new_task_path, class: 'btn btn-outline-info m-1' %>
+	<%= link_to I18n.t('tasks.new.short'), new_task_path, class: 'btn btn-outline-info m-1' %>
 
-		<div class="ms-auto">
-			<%= form_with url:tasks_path, method: :get, class: 'd-flex flex-row align-items-end' do |f| %>
-				<div class="p-1">
-					<%= f.label :name, Task.human_attribute_name(:name), class: 'form-label' %>
-					<%= f.text_field :name, { value: params[:name], class: 'form-control' } %>
+	<div class="ms-auto">
+		<%= form_with url:tasks_path, method: :get, class: 'd-flex flex-row align-items-end' do |f| %>
+			<div class="p-1">
+				<%= f.label :name, Task.human_attribute_name(:name), class: 'form-label' %>
+				<%= f.text_field :name, { value: params[:name], class: 'form-control' } %>
+			</div>
+			<div class="p-1 ms-auto">
+				<%= f.label :task_status_id, TaskStatus.model_name.human, class: 'form-label' %>
+				<%= f.collection_select(:task_status_id, TaskStatus.all, :id, :name,
+						{ selected: params[:task_status_id], include_blank: 'なし' }, { class: 'form-select' }) %>
+			</div>
+			<div class="p-1">
+				<%= f.label :order_column, 'ソート', class: 'form-label' %>
+				<div class="input-group">
+					<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"], [Priority.model_name.human, "priority_id"]],
+						{ selected: params[:order_column], include_blank: 'なし' }, { class: 'form-select', style: 'width:58%' } %>
+					<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] }, { class: 'form-select', style: 'width:42%' } %>
 				</div>
-				<div class="p-1 ms-auto">
-					<%= f.label :task_status_id, TaskStatus.model_name.human, class: 'form-label' %>
-					<%= f.collection_select(:task_status_id, TaskStatus.all, :id, :name,
-							{ selected: params[:task_status_id], include_blank: 'なし' }, { class: 'form-select' }) %>
-				</div>
-				<div class="p-1">
-					<%= f.label :order_column, 'ソート', class: 'form-label' %>
-					<div class="input-group">
-						<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"], [Priority.model_name.human, "priority_id"]],
-							{ selected: params[:order_column], include_blank: 'なし' }, { class: 'form-select', style: 'width:58%' } %>
-						<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] }, { class: 'form-select', style: 'width:42%' } %>
-					</div>
-				</div>
-				<div class="p-1">
-					<%= f.label :per, '表示件数', class: 'form-label' %>
-					<%= f.select :per, [10, 20, 50],
-						{ selected: params[:per] }, { class: 'form-select' } %>
-				</div>
-				<div class="p-1">
-					<%= button_tag(type: "submit", class: "btn btn-outline-primary") do %>
-						<% bootstrap_icon "search" %>
-					<% end %>
-				</div>
-			<% end %>
-		</div>
-		<%= link_to bootstrap_icon("trash3"), tasks_path, class: 'btn btn-outline-danger m-1' %>
-	</div>
-
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th><%= Task.human_attribute_name(:id) %></th>
-				<th><%= Task.human_attribute_name(:name) %></th>
-				<th><%= Task.human_attribute_name(:detail) %></th>
-				<th><%= Task.human_attribute_name(:deadline) %></th>
-				<th><%= TaskStatus.model_name.human %></th>
-				<th><%= Priority.model_name.human %></th>
-				<th>リンク</th>
-			</tr>
-		</thead>
-		<tbody>
-		<% @tasks.each do |task| %>
-			<tr>
-				<td><%= task.id %></td>
-				<td><%= task.name %></td>
-				<td><%= simple_format task.detail %></td>
-
-				<td><%= I18n.l task.deadline if task.deadline.present? %></td>
-				<td><%= task.status_name %></td>
-				<td><%= task.priority_name %></td>
-				<td>
-					<%= link_to I18n.t('tasks.show.short'), task, class: 'btn btn-outline-secondary' %>
-					<%= link_to I18n.t('tasks.edit.short'), edit_task_path(task), class: 'btn btn-outline-success' %>
-				</td>
-			</tr>
+			</div>
+			<div class="p-1">
+				<%= f.label :per, '表示件数', class: 'form-label' %>
+				<%= f.select :per, [10, 20, 50],
+					{ selected: params[:per] }, { class: 'form-select' } %>
+			</div>
+			<div class="p-1">
+				<%= button_tag(type: "submit", class: "btn btn-outline-primary") do %>
+					<% bootstrap_icon "search" %>
+				<% end %>
+			</div>
 		<% end %>
-		</tbody>
-	</table>
-	<div class="row">
-		<div class="col-10 d-flex justify-content-center">
-			<%= paginate @tasks, theme: 'bootstrap-5' %>
-		</div>
-		<div class="col-2">
-			<%= page_entries_info @tasks %>
-		</div>
 	</div>
+	<%= link_to bootstrap_icon("trash3"), tasks_path, class: 'btn btn-outline-danger m-1' %>
+</div>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th><%= Task.human_attribute_name(:id) %></th>
+			<th><%= Task.human_attribute_name(:name) %></th>
+			<th><%= Task.human_attribute_name(:detail) %></th>
+			<th><%= Task.human_attribute_name(:deadline) %></th>
+			<th><%= TaskStatus.model_name.human %></th>
+			<th><%= Priority.model_name.human %></th>
+			<th>リンク</th>
+		</tr>
+	</thead>
+	<tbody>
+	<% @tasks.preload(:task_status, :priority).each do |task| %>
+		<tr>
+			<td><%= task.id %></td>
+			<td><%= task.name %></td>
+			<td><%= simple_format task.detail %></td>
+			<td><%= I18n.l task.deadline if task.deadline.present? %></td>
+			<td><%= task.task_status.name %></td>
+			<td><%= task.priority.name %></td>
+			<td>
+				<%= link_to I18n.t('tasks.show.short'), task, class: 'btn btn-outline-secondary' %>
+				<%= link_to I18n.t('tasks.edit.short'), edit_task_path(task), class: 'btn btn-outline-success' %>
+			</td>
+		</tr>
+	<% end %>
+	</tbody>
+</table>
+<div class="row">
+	<div class="col-10 d-flex justify-content-center">
+		<%= paginate @tasks, theme: 'bootstrap-5' %>
+	</div>
+	<div class="col-2">
+		<%= page_entries_info @tasks %>
+	</div>
+</div>

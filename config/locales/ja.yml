@@ -1,5 +1,7 @@
 ja:
   hello: "こんにちは 世界"
+  form:
+    submit: 送信
   time:
     formats:
       default: "%Y/%m/%d %H:%M"

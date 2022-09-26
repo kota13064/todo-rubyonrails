@@ -38,3 +38,7 @@ Style/FrozenStringLiteralComment:
 # Start context description with 'when', 'with', or 'without'
 RSpec/ContextWording:
   Enabled: false
+
+# Configuration parameters: AllowSubject.
+RSpec/MultipleMemoizedHelpers:
+  Max: 6

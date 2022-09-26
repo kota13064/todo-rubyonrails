@@ -1,10 +1,12 @@
 <% if model.errors.any? %>
   <div class = "d-flex ps-4">
+  <ul>
     <% model.errors.full_messages.each do |message| %>
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <%= message %>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     <% end %>
+    </ul>
   </div>
 <% end %>

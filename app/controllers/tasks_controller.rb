@@ -1,8 +1,9 @@
 class TasksController < ApplicationController
+  before_action :require_login
   before_action :set_task, only: %i[show edit update destroy]
 
   def index
-    @tasks = Task.search(search_params)
+    @tasks = Task.search(search_params).select_user(current_user.id)
   end
 
   def show; end
@@ -15,6 +16,7 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
+    @task.user_id = current_user.id
 
     if @task.save
       redirect_to task_url(@task), notice: I18n.t('notice.create')
@@ -34,12 +36,6 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     redirect_to tasks_url, notice: I18n.t('notice.destroy')
-  end
-
-  rescue_from ActiveRecord::RecordNotFound, with: :render404
-
-  def render404
-    render file: 'public/404.html', status: :not_found, content_type: 'text/html'
   end
 
   private

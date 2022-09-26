@@ -1,0 +1,99 @@
+<h1><%= I18n.t "users.show.title" %></h1>
+
+<%= render 'layouts/notice' %>
+
+<table class="d-flex table table-bordered">
+  <tbody>
+    <tr>
+			<td><strong><%= User.human_attribute_name(:name) %></strong></td>
+      <td><%= @user.name %></td>
+    </tr>
+    <tr>
+			<td><strong><%= User.human_attribute_name(:email) %></strong></td>
+      <td><%= @user.email %></td>
+    </tr>
+    <tr>
+			<td><strong><%= User.human_attribute_name(:count_of_tasks) %></strong></td>
+      <td><%= @user.tasks.count %></td>
+    </tr>
+	</tbody>
+</table>
+
+<div class="d-flex flex-row">
+  <%= link_to I18n.t('users.edit.title'), edit_admin_user_path(@user), class: 'btn btn-outline-success m-2' %>
+  <%= button_to I18n.t('users.destroy.title'), admin_user_path(@user), method: :delete, data:{ confirm: '本当に削除してよろしいですか？'}, class: 'btn btn-danger m-2' %>
+</div>
+
+  <%= link_to I18n.t('users.index.title'), admin_users_path, class: 'btn btn-outline-secondary m-2' %>
+
+<%# ユーザーのタスク一覧 %>
+<div class="container p-3 mt-5 border">
+  <h1><%= I18n.t "tasks.index.title" %></h1>
+  <div class="d-flex flex-row align-items-end">
+  	<div class="ms-auto">
+  		<%= form_with url: admin_user_path, method: :get, class: 'd-flex flex-row align-items-end' do |f| %>
+  			<div class="p-1">
+  				<%= f.label :name, Task.human_attribute_name(:name), class: 'form-label' %>
+  				<%= f.text_field :name, { value: params[:name], class: 'form-control' } %>
+  			</div>
+  			<div class="p-1 ms-auto">
+  				<%= f.label :task_status_id, TaskStatus.model_name.human, class: 'form-label' %>
+  				<%= f.collection_select(:task_status_id, TaskStatus.all, :id, :name,
+  						{ selected: params[:task_status_id], include_blank: 'なし' }, { class: 'form-select' }) %>
+  			</div>
+  			<div class="p-1">
+  				<%= f.label :order_column, 'ソート', class: 'form-label' %>
+  				<div class="input-group">
+  					<%= f.select :order_column, [[Task.human_attribute_name(:deadline), "deadline"], [Priority.model_name.human, "priority_id"]],
+  						{ selected: params[:order_column], include_blank: 'なし' }, { class: 'form-select', style: 'width:58%' } %>
+  					<%= f.select :order, [["昇順", "asc"], ["降順", "desc"]], { selected: params[:order] }, { class: 'form-select', style: 'width:42%' } %>
+  				</div>
+  			</div>
+  			<div class="p-1">
+  				<%= f.label :per, '表示件数', class: 'form-label' %>
+  				<%= f.select :per, [10, 20, 50],
+  					{ selected: params[:per] }, { class: 'form-select' } %>
+  			</div>
+  			<div class="p-1">
+  				<%= button_tag(type: "submit", class: "btn btn-outline-primary") do %>
+  					<% bootstrap_icon "search" %>
+  				<% end %>
+  			</div>
+  		<% end %>
+  	</div>
+  	<%= link_to bootstrap_icon("trash3"), admin_user_path, class: 'btn btn-outline-danger m-1' %>
+  </div>
+
+  <table class="table table-striped">
+  	<thead>
+  		<tr>
+  			<th><%= Task.human_attribute_name(:id) %></th>
+  			<th><%= Task.human_attribute_name(:name) %></th>
+  			<th><%= Task.human_attribute_name(:detail) %></th>
+  			<th><%= Task.human_attribute_name(:deadline) %></th>
+  			<th><%= TaskStatus.model_name.human %></th>
+  			<th><%= Priority.model_name.human %></th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  	<% @tasks.preload(:task_status, :priority).each do |task| %>
+  		<tr>
+  			<td><%= task.id %></td>
+  			<td><%= task.name %></td>
+  			<td><%= simple_format task.detail %></td>
+  			<td><%= I18n.l task.deadline if task.deadline.present? %></td>
+  			<td><%= task.task_status.name %></td>
+  			<td><%= task.priority.name %></td>
+  		</tr>
+  	<% end %>
+  	</tbody>
+  </table>
+  <div class="row">
+  	<div class="col-10 d-flex justify-content-center">
+  		<%= paginate @tasks, theme: 'bootstrap-5' %>
+  	</div>
+  	<div class="col-2">
+  		<%= page_entries_info @tasks %>
+  	</div>
+  </div>
+</div>

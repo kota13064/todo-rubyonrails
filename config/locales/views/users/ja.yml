@@ -1,0 +1,16 @@
+ja:
+  users:
+    index:
+      title: ユーザー一覧
+    show:
+      title: ユーザーを閲覧
+      short: 閲覧
+    edit:
+      title: ユーザーを編集
+      short: 編集
+    new:
+      title: ユーザーを新規作成
+      short: 新規作成
+    destroy:
+      title: ユーザーを削除
+      short: 削除
