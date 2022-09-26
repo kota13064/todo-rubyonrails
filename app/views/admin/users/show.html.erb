@@ -69,21 +69,27 @@
   		<tr>
   			<th><%= Task.human_attribute_name(:id) %></th>
   			<th><%= Task.human_attribute_name(:name) %></th>
-  			<th><%= Task.human_attribute_name(:detail) %></th>
   			<th><%= Task.human_attribute_name(:deadline) %></th>
   			<th><%= TaskStatus.model_name.human %></th>
   			<th><%= Priority.model_name.human %></th>
+				<th><%= Tag.model_name.human %></th>
   		</tr>
   	</thead>
   	<tbody>
-  	<% @tasks.preload(:task_status, :priority).each do |task| %>
+  	<% @tasks.preload(:task_status, :priority, :tags).each do |task| %>
   		<tr>
   			<td><%= task.id %></td>
   			<td><%= task.name %></td>
-  			<td><%= simple_format task.detail %></td>
   			<td><%= I18n.l task.deadline if task.deadline.present? %></td>
   			<td><%= task.task_status.name %></td>
   			<td><%= task.priority.name %></td>
+				<td>
+					<% task.tags.each do |tag| %>
+						<button class="btn btn-outline-dark btn-sm tag-btn" data-id=<%= tag.id %> data-name=<%= tag.name %>>
+							<%= tag.name %>
+						</button>
+					<% end %>
+				</td>
   		</tr>
   	<% end %>
   	</tbody>

@@ -14,6 +14,7 @@ class Task < ApplicationRecord
       .search_by_name(params[:name])
       .search_by_status(params[:task_status_id])
       .page(params[:page]).per(params[:per])
+      .search_by_tag_ids(params[:tag_ids])
   }
 
   scope :order_by_column, lambda { |order_column, order|
@@ -26,6 +27,16 @@ class Task < ApplicationRecord
 
   scope :search_by_status, lambda { |task_status_id|
     where(task_status_id:) if task_status_id.present?
+  }
+
+  scope :search_by_tag_ids, lambda { |tag_ids|
+    if tag_ids.blank? || tag_ids.compact_blank.blank?
+      return nil # nilを返せばscopeはskipされる
+    end
+
+    joins(:task_tag_relationships)
+      .where(task_tag_relationships: { tag_id: tag_ids.compact_blank })
+      .distinct
   }
 
   scope :select_user, lambda { |user_id|
