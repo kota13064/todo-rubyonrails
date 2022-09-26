@@ -58,3 +58,28 @@ User.all.each do |user|
     )
   end
 end
+
+30.times do |n|
+  Tag.create!(
+    name: "tag#{n + 1}"
+  )
+end
+
+Task.all.each do |task|
+  TaskTagRelationship.create!(
+    task_id: task.id,
+    tag_id: rand(1..30)
+  )
+end
+
+# now = Time.zone.now
+# 100.times do |n|
+#   Task.create!(
+#     name: "test task#{n + 1}",
+#     detail: "test detail#{n + 1} created by seed",
+#     deadline: now.since(rand(1..50).days),
+#     task_status_id: rand(1..3),
+#     priority_id: rand(1..3),
+#     user_id: 8
+#   )
+# end
