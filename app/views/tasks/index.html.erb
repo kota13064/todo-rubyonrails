@@ -53,14 +53,14 @@
 		</tr>
 	</thead>
 	<tbody>
-	<% @tasks.each do |task| %>
+	<% @tasks.preload(:task_status, :priority).each do |task| %>
 		<tr>
 			<td><%= task.id %></td>
 			<td><%= task.name %></td>
 			<td><%= simple_format task.detail %></td>
 			<td><%= I18n.l task.deadline if task.deadline.present? %></td>
-			<td><%= task.status_name %></td>
-			<td><%= task.priority_name %></td>
+			<td><%= task.task_status.name %></td>
+			<td><%= task.priority.name %></td>
 			<td>
 				<%= link_to I18n.t('tasks.show.short'), task, class: 'btn btn-outline-secondary' %>
 				<%= link_to I18n.t('tasks.edit.short'), edit_task_path(task), class: 'btn btn-outline-success' %>
