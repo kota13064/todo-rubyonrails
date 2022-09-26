@@ -14,7 +14,7 @@
     </tr>
     <tr>
 			<td><strong><%= User.human_attribute_name(:count_of_tasks) %></strong></td>
-      <td><%= @user.count_of_tasks %></td>
+      <td><%= @user.tasks.count %></td>
     </tr>
 	</tbody>
 </table>
@@ -76,14 +76,14 @@
   		</tr>
   	</thead>
   	<tbody>
-  	<% @tasks.each do |task| %>
+  	<% @tasks.preload(:task_status, :priority).each do |task| %>
   		<tr>
   			<td><%= task.id %></td>
   			<td><%= task.name %></td>
   			<td><%= simple_format task.detail %></td>
   			<td><%= I18n.l task.deadline if task.deadline.present? %></td>
-  			<td><%= task.status_name %></td>
-  			<td><%= task.priority_name %></td>
+  			<td><%= task.task_status.name %></td>
+  			<td><%= task.priority.name %></td>
   		</tr>
   	<% end %>
   	</tbody>

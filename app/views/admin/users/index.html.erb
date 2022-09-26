@@ -18,13 +18,13 @@
 		</tr>
 	</thead>
 	<tbody>
-	<% @users.each do |user| %>
+	<% @users.preload(:tasks).each do |user| %>
 		<tr>
 			<td><%= user.id %></td>
 			<td><%= user.name %></td>
 			<td><%= user.email %></td>
 			<td><%= user.is_admin ? '管理者' : '一般' %></td>
-      <td><%= user.count_of_tasks %></td>
+      <td><%= user.tasks.size %></td>
 			<td>
 				<%= link_to I18n.t('users.show.short'), admin_user_path(user), class: 'btn btn-outline-secondary' %>
 				<%= link_to I18n.t('users.edit.short'), edit_admin_user_path(user), class: 'btn btn-outline-success' %>

@@ -5,11 +5,13 @@ class Task < ApplicationRecord
 
   validates :name, presence: true
 
-  scope :default, lambda {
-    select('tasks.*, task_statuses.name AS status_name, priorities.name AS priority_name')
-      .joins(:task_status)
-      .joins(:priority)
-      .order(created_at: :desc)
+  scope :search, lambda { |params|
+    params[:per] = params[:per] || 10
+    order(created_at: :desc)
+      .order_by_column(params[:order_column], params[:order])
+      .search_by_name(params[:name])
+      .search_by_status(params[:task_status_id])
+      .page(params[:page]).per(params[:per])
   }
 
   scope :order_by_column, lambda { |order_column, order|
@@ -22,14 +24,6 @@ class Task < ApplicationRecord
 
   scope :search_by_status, lambda { |task_status_id|
     where(task_status_id:) if task_status_id.present?
-  }
-
-  scope :search, lambda { |params|
-    default
-      .search_by_name(params[:name])
-      .search_by_status(params[:task_status_id])
-      .order_by_column(params[:order_column], params[:order])
-      .page(params[:page]).per(params[:per])
   }
 
   scope :select_user, lambda { |user_id|

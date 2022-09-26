@@ -2,15 +2,13 @@ module Admin
   class UsersController < ApplicationController
     before_action :require_login
     before_action :admin_user
-    before_action :set_user, only: %i[edit update destroy]
+    before_action :set_user, only: %i[show edit update destroy]
 
     def index
       @users = User.search(search_params)
     end
 
     def show
-      @user = User.default.find(params[:id])
-      tasks_search_params[:per] = 10 if tasks_search_params[:per].present?
       @tasks = Task.search(tasks_search_params).select_user(@user.id)
     end
 
