@@ -2,6 +2,8 @@ class Task < ApplicationRecord
   belongs_to :user
   belongs_to :task_status
   belongs_to :priority
+  has_many :task_tag_relationships, dependent: :destroy
+  has_many :tags, through: :task_tag_relationships, dependent: :nullify
 
   validates :name, presence: true
 
