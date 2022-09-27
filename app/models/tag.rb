@@ -1,6 +1,6 @@
 class Tag < ApplicationRecord
-  has_many :task_tag_relationships, dependent: :destroy
-  has_many :tasks, through: :task_tag_relationships, dependent: :nullify
+  has_many :task_tags, dependent: :destroy
+  has_many :tasks, through: :task_tags, dependent: :nullify
 
   validates :name, presence: true,
                    uniqueness: true

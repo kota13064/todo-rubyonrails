@@ -2,8 +2,8 @@ class Task < ApplicationRecord
   belongs_to :user
   belongs_to :task_status
   belongs_to :priority
-  has_many :task_tag_relationships, dependent: :destroy
-  has_many :tags, through: :task_tag_relationships, dependent: :nullify
+  has_many :task_tags, dependent: :destroy
+  has_many :tags, through: :task_tags, dependent: :nullify
 
   validates :name, presence: true
 
@@ -34,8 +34,8 @@ class Task < ApplicationRecord
       return nil # nilを返せばscopeはskipされる
     end
 
-    joins(:task_tag_relationships)
-      .where(task_tag_relationships: { tag_id: tag_ids.compact_blank })
+    joins(:task_tags)
+      .where(task_tags: { tag_id: tag_ids.compact_blank })
       .distinct
   }
 

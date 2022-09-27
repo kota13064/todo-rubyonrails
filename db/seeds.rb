@@ -66,7 +66,7 @@ end
 end
 
 Task.all.each do |task|
-  TaskTagRelationship.create!(
+  TaskTag.create!(
     task_id: task.id,
     tag_id: rand(1..30)
   )
