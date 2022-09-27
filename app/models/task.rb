@@ -30,7 +30,7 @@ class Task < ApplicationRecord
   }
 
   scope :search_by_tag_ids, lambda { |tag_ids|
-    joins(:task_tags).merge(TaskTag.where(tag_id: tag_ids)).distinct if tag_ids.present?
+    joins(:task_tags).merge(TaskTag.where(tag_id: tag_ids.compact_blank)).distinct if tag_ids&.compact_blank.present?
   }
 
   scope :select_user, lambda { |user_id|
