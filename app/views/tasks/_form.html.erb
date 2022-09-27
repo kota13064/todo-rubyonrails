@@ -5,33 +5,9 @@
 
 <script>
   $(document).ready(() => {
-    var select2_obj = $('#task_tag_ids')
+    const select2_obj = $('#task_tag_ids')
     select2_obj.select2({
-      theme: "bootstrap-5",
-      language: "ja",
-      multiple: true,
       tags: true,
-      tokenSeparators: [',', ' '],
-      minimumInputLength: 1,
-      ajax: {
-        url: "/tags",
-        dataType: 'json',
-        delay: 250,
-        data: (params) => {
-          return {
-            name: params.term
-          };
-        },
-        processResults: (data, params) => {
-          var result = data.map(tag => {
-            return {id: tag.id, text: tag.name}
-          })
-          return {
-            results: result
-          };
-        },
-        cache: true
-      },
       createTag: (params) => {
         var term = $.trim(params.term);
         if (term === '') return null;
@@ -40,14 +16,14 @@
           text: '新しくタグを作る : ' + term,
           name: term
         };
-      }
-    })
-    .on('select2:select', (e) => {
-      var data = e.params.data;
+      },
+      ...select2_setting_list
+    }).on('select2:select', (e) => {
+      const data = e.params.data;
 
       if (data.id == 'new') {
         // あらかじめ'new'以外の選択されたIDを取得しておく
-        var select_value = select2_obj.val();
+        const select_value = select2_obj.val();
         select_value.pop()
         // ajaxでタグを新規作成してIDを取得
         $.post("/tags", { tag: { name: data.name } })

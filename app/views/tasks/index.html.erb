@@ -4,45 +4,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/i18n/ja.js"></script>
 
 <script>
-  $(document).ready(() => {
-    const select2_obj = $('#tag_ids')
+$(function() {
+  const select2_obj = $('#tag_ids')
+  select2_obj.select2({ width: '200px', ...select2_setting_list });
 
-    select2_obj.select2({
-      theme: "bootstrap-5",
-      language: "ja",
-      multiple: true,
-      tokenSeparators: [',', ' '],
-			width: '200px',
-      minimumInputLength: 1,
-      ajax: {
-        url: "/tags",
-        dataType: 'json',
-        delay: 250,
-        data: (params) => {
-          return {
-            name: params.term
-          };
-        },
-        processResults: (data, params) => {
-          const results = data.map(tag => {
-            return {id: tag.id, text: tag.name}
-          })
-          return {
-            results: results
-          };
-        },
-        cache: true
-      }
-    });
-
-		$('.tag-btn').on('click', (e) => {
-			const data = e.currentTarget.dataset; // {id: , name: }
-			const selected = select2_obj.val(); // nul or []
-			if (!(selected && selected.includes(data.id))) {
-				select2_obj.append(new Option(data.name, data.id, true, true)).trigger('change');
-			}
-		});
+	$('.tag-btn').on('click', (e) => {
+		const data = e.currentTarget.dataset; // {id: , name: }
+		const selected = select2_obj.val(); // nul or []
+		if (!(selected && selected.includes(data.id))) {
+			select2_obj.append(new Option(data.name, data.id, true, true)).trigger('change');
+		}
 	});
+});
 </script>
 
 <h1><%= I18n.t "tasks.index.title" %></h1>
@@ -75,7 +48,7 @@
 			<div class="p-1">
 				<%= f.label :tag_ids, Tag.model_name.human, class: 'form-label' %>
 				<%= f.collection_select(:tag_ids, Tag.where(id: params[:tag_ids]), :id, :name,
-					{ selected: params[:tag_ids] }, { class: 'form-select', multiple: true } ) %>
+					{ selected: params[:tag_ids] }, { class: 'form-select', multiple: true, include_blank: false } ) %>
 			</div>
 			<div class="p-1">
 				<%= f.label :per, '表示件数', class: 'form-label' %>
