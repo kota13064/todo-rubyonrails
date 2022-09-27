@@ -30,13 +30,7 @@ class Task < ApplicationRecord
   }
 
   scope :search_by_tag_ids, lambda { |tag_ids|
-    if tag_ids.blank? || tag_ids.compact_blank.blank?
-      return nil # nilを返せばscopeはskipされる
-    end
-
-    joins(:task_tags)
-      .where(task_tags: { tag_id: tag_ids.compact_blank })
-      .distinct
+    joins(:task_tags).merge(TaskTag.where(tag_id: tag_ids)).distinct if tag_ids.present?
   }
 
   scope :select_user, lambda { |user_id|
