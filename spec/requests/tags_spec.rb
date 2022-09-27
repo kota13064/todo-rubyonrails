@@ -5,6 +5,13 @@ RSpec.describe 'Tags', type: :request do
     JSON.parse(response.body)
   end
 
+  let!(:user) { create(:user) }
+
+  # login
+  before do
+    post login_path, params: { email: user.email, password: user.password }
+  end
+
   describe 'GET /index' do
     let!(:tag1) { create(:tag) }
     let!(:tag2) { create(:tag) }
