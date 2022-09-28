@@ -32,6 +32,16 @@
         <% end %>
       </td>
     </tr>
+    <tr>
+			<td><strong><%= Tag.model_name.human %></strong></td>
+      <td>
+        <% @task.tags.each do |tag| %>
+					<button class="btn btn-outline-dark btn-sm" disabled>
+						<%= tag.name %>
+					</button>
+				<% end %>
+      </td>
+    </tr>
 	</tbody>
 </table>
 

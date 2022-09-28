@@ -42,3 +42,6 @@ RSpec/ContextWording:
 # Configuration parameters: AllowSubject.
 RSpec/MultipleMemoizedHelpers:
   Max: 6
+
+RSpec/MultipleExpectations:
+  Max: 2

@@ -1,3 +1,49 @@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.2/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.2/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/i18n/ja.js"></script>
+
+<script>
+  $(document).ready(() => {
+    const select2_obj = $('#task_tag_ids')
+    select2_obj.select2({
+      tags: true,
+      createTag: (params) => {
+        var term = $.trim(params.term);
+        if (term === '') return null;
+        return {
+          id: 'new',
+          text: '新しくタグを作る : ' + term,
+          name: term
+        };
+      },
+      ...select2_setting_list
+    }).on('select2:select', (e) => {
+      const data = e.params.data;
+
+      if (data.id == 'new') {
+        // あらかじめ'new'以外の選択されたIDを取得しておく
+        const select_value = select2_obj.val();
+        select_value.pop()
+        // ajaxでタグを新規作成してIDを取得
+        $.post("/tags", { tag: { name: data.name } })
+        .done((responseJSON) => {
+          // 新しいタグのselect optionを作って、IDを選択済に追加
+          select_value.push(responseJSON.id)
+          select2_obj.append(new Option(data.name, responseJSON.id)).trigger('change')
+          select2_obj.val(select_value).trigger('change')
+        })
+        .fail((response) => {
+          response.responseJSON.errors.forEach(function(error) {
+            alert(error);
+          });
+        });
+      }
+    });
+});
+</script>
+
+
 <%= form_with model: task, class: 'd-flex flex-column' do |form| %>
 
   <%= render 'layouts/error_form', model: task %>
@@ -13,20 +59,26 @@
   </div>
 
   <div class="d-flex flex-row align-items-end">
-  <div class="p-1">
-    <%= form.label :deadline, Task.human_attribute_name(:deadline), class: 'form-label' %>
-    <%= form.datetime_field :deadline, class: 'form-control' %>
+    <div class="p-1">
+      <%= form.label :deadline, Task.human_attribute_name(:deadline), class: 'form-label' %>
+      <%= form.datetime_field :deadline, class: 'form-control' %>
+    </div>
+
+    <div class="p-1">
+      <%= form.label :task_status_id, TaskStatus.model_name.human, class: 'form-label' %>
+      <%= form.collection_select(:task_status_id, TaskStatus.all.order(:id), :id, :name, {}, { class: 'form-select' } ) %>
+    </div>
+
+    <div class="p-1">
+      <%= form.label :priority_id, Priority.model_name.human, class: 'form-label' %>
+      <%= form.collection_select(:priority_id, Priority.all.order(:id), :id, :name, {}, { class: 'form-select' } ) %>
+    </div>
   </div>
 
   <div class="p-1">
-    <%= form.label :task_status_id, TaskStatus.model_name.human, class: 'form-label' %>
-    <%= form.collection_select(:task_status_id, TaskStatus.all.order(:id), :id, :name, {}, { class: 'form-select' } ) %>
-  </div>
-
-  <div class="p-1">
-    <%= form.label :priority_id, Priority.model_name.human, class: 'form-label' %>
-    <%= form.collection_select(:priority_id, Priority.all.order(:id), :id, :name, {}, { class: 'form-select' } ) %>
-  </div>
+    <%= form.label :tag_ids, Tag.model_name.human, class: 'form-label' %>
+    <%= form.collection_select(:tag_ids, task.tags, :id, :name,
+      {}, { class: 'form-select', multiple: true } ) %>
   </div>
 
   <div class="p-1">

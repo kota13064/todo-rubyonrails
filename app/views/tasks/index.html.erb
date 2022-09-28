@@ -1,3 +1,23 @@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.2/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.2/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/i18n/ja.js"></script>
+
+<script>
+$(function() {
+  const select2_obj = $('#tag_ids')
+  select2_obj.select2({ width: '200px', ...select2_setting_list });
+
+	$('.tag-btn').on('click', (e) => {
+		const data = e.currentTarget.dataset; // {id: , name: }
+		const selected = select2_obj.val(); // nul or []
+		if (!(selected && selected.includes(data.id))) {
+			select2_obj.append(new Option(data.name, data.id, true, true)).trigger('change');
+		}
+	});
+});
+</script>
+
 <h1><%= I18n.t "tasks.index.title" %></h1>
 
 <%= render 'layouts/notice' %>
@@ -26,6 +46,11 @@
 				</div>
 			</div>
 			<div class="p-1">
+				<%= f.label :tag_ids, Tag.model_name.human, class: 'form-label' %>
+				<%= f.collection_select(:tag_ids, Tag.where(id: params[:tag_ids]), :id, :name,
+					{ selected: params[:tag_ids] }, { class: 'form-select', multiple: true, include_blank: false } ) %>
+			</div>
+			<div class="p-1">
 				<%= f.label :per, '表示件数', class: 'form-label' %>
 				<%= f.select :per, [10, 20, 50],
 					{ selected: params[:per] }, { class: 'form-select' } %>
@@ -45,22 +70,28 @@
 		<tr>
 			<th><%= Task.human_attribute_name(:id) %></th>
 			<th><%= Task.human_attribute_name(:name) %></th>
-			<th><%= Task.human_attribute_name(:detail) %></th>
 			<th><%= Task.human_attribute_name(:deadline) %></th>
 			<th><%= TaskStatus.model_name.human %></th>
 			<th><%= Priority.model_name.human %></th>
+			<th><%= Tag.model_name.human %></th>
 			<th>リンク</th>
 		</tr>
 	</thead>
 	<tbody>
-	<% @tasks.preload(:task_status, :priority).each do |task| %>
+	<% @tasks.preload(:task_status, :priority, :tags).each do |task| %>
 		<tr>
 			<td><%= task.id %></td>
 			<td><%= task.name %></td>
-			<td><%= simple_format task.detail %></td>
 			<td><%= I18n.l task.deadline if task.deadline.present? %></td>
 			<td><%= task.task_status.name %></td>
 			<td><%= task.priority.name %></td>
+			<td>
+				<% task.tags.each do |tag| %>
+					<button class="btn btn-outline-dark btn-sm tag-btn" data-id=<%= tag.id %> data-name=<%= tag.name %>>
+						<%= tag.name %>
+					</button>
+				<% end %>
+			</td>
 			<td>
 				<%= link_to I18n.t('tasks.show.short'), task, class: 'btn btn-outline-secondary' %>
 				<%= link_to I18n.t('tasks.edit.short'), edit_task_path(task), class: 'btn btn-outline-success' %>
